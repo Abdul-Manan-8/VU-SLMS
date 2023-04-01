@@ -1,0 +1,70 @@
+﻿@model VU_SLMS.Models.Benefit
+@{
+    ViewData["Title"] = "Add/Update Benefit";
+    var emp = ViewBag.Totalemp;
+}
+<div class="card row">
+    <div class="card-body col-md-12 col-lg-10">
+        <h5 class="card-title">@ViewData["Title"]</h5>
+        <form action="AddUpdateBenefit" method="post">
+            @if (Model != null)
+            {
+                <input type="hidden" asp-for="Id" />
+            }
+            <div class="row mb-3">
+                <div class="col-sm-10">
+                    <div class="form-floating mb-3">
+                        <select asp-for="EmployeeId" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                            <option selected>Click this select</option>
+                            @foreach(var E in emp)
+                            {
+                                <option value="@E.Id">@E.Name</option>
+                            }
+                        </select>
+                        <label for="floatingSelect">Select Employee</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <select asp-for="Name" class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                            <option selected></option>
+                            <option value="Regular">Regular</option>
+                            <option value="Eid">Eid</option>
+                            <option value="Emergency">Emergency</option>
+                            <option value="Medical">Medical</option>
+                        </select>
+                        <label for="floatingSelect">Select Benefit Type</label>
+                    </div>
+                    @*<div class="form-floating mb-3">
+                        <input asp-for="Designation" type="text" class="form-control" id="floatingPassword" placeholder="Designation" required>
+                        <label for="floatingPassword">Designation</label>
+                    </div>*@
+                    <div class="form-floating mb-3">
+                        <input asp-for="DateOfIssue" type="text" class="form-control" id="floatingdate" placeholder="Date of Issue" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" autocomplete="off" required>
+                        <label for="floatingdate">Date of Issue</label>
+                    </div>
+                    @*<div class="form-floating mb-3">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px;"></textarea>
+                    <label for="floatingTextarea">Comments</label>
+                    </div>
+                    *@
+                    @if (Model != null)
+                    {
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Update Employee</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Add Employee</button>
+                    }
+                    <button type="reset" class="btn btn-sm  btn-outline-warning">Reset Form</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@*@section scripts{
+    <script>
+        $( function () {
+
+        });
+    </script>
+}*@

@@ -1,0 +1,34 @@
+﻿@model IEnumerable<VU_SLMS.Models.Employee>
+@{
+    ViewData["Title"] = "Employee List";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@ViewData["Title"]</h5>
+
+        <!-- Table with stripped rows -->
+        <table class="table datatable">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Desgination</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var L in Model){
+                <tr>
+                    <td>@L.Name</td>
+                    <td>@L.Designation</td>
+                    <td>
+                        <a asp-action="EmployeeDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info">Detail</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+</div>
