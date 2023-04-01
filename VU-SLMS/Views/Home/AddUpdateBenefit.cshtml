@@ -14,45 +14,36 @@
             <div class="row mb-3">
                 <div class="col-sm-10">
                     <div class="form-floating mb-3">
-                        <select asp-for="EmployeeId" class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                            <option selected>Click this select</option>
+                        <select asp-for="EmployeeId" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                            <option selected value="">Select Employee</option>
                             @foreach(var E in emp)
                             {
                                 <option value="@E.Id">@E.Name</option>
                             }
                         </select>
-                        <label for="floatingSelect">Select Employee</label>
+                        <label for="floatingSelect">Employee Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select asp-for="Name" class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                            <option selected></option>
-                            <option value="Regular">Regular</option>
-                            <option value="Eid">Eid</option>
-                            <option value="Emergency">Emergency</option>
-                            <option value="Medical">Medical</option>
+                        <select asp-for="Name" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                            <option selected value="">Select Benefit Type</option>
+                            <option value="Loan">Loan</option>
+                            <option value="Uniform">Uniform</option>
+                            <option value="Shoes">Shoes</option>
+                            <option value="Jacket">Jacket</option>
                         </select>
-                        <label for="floatingSelect">Select Benefit Type</label>
+                        <label for="floatingSelect">Benefit</label>
                     </div>
-                    @*<div class="form-floating mb-3">
-                        <input asp-for="Designation" type="text" class="form-control" id="floatingPassword" placeholder="Designation" required>
-                        <label for="floatingPassword">Designation</label>
-                    </div>*@
                     <div class="form-floating mb-3">
                         <input asp-for="DateOfIssue" type="text" class="form-control" id="floatingdate" placeholder="Date of Issue" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" autocomplete="off" required>
                         <label for="floatingdate">Date of Issue</label>
                     </div>
-                    @*<div class="form-floating mb-3">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" style="height: 100px;"></textarea>
-                    <label for="floatingTextarea">Comments</label>
-                    </div>
-                    *@
                     @if (Model != null)
                     {
-                        <button type="submit" class="btn btn-sm btn-outline-primary">Update Employee</button>
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Update Benefit</button>
                     }
                     else
                     {
-                        <button type="submit" class="btn btn-sm btn-outline-primary">Add Employee</button>
+                        <button type="submit" class="btn btn-sm btn-outline-primary">Add Benefit</button>
                     }
                     <button type="reset" class="btn btn-sm  btn-outline-warning">Reset Form</button>
                 </div>
@@ -68,3 +59,30 @@
         });
     </script>
 }*@
+
+
+
+@*<select id="myDropdown">
+  <option value="">Select an option</option>
+  <option value="option1">Option 1</option>
+  <option value="option2">Option 2</option>
+  <option value="input">Enter a value</option>
+</select>
+
+<div id="inputContainer" style="display: none;">
+  <input type="text" id="inputValue">
+</div>
+
+<script>
+  const dropdown = document.getElementById("myDropdown");
+  const inputContainer = document.getElementById("inputContainer");
+
+  dropdown.addEventListener("change", function() {
+    const selectedOption = this.value;
+    if (selectedOption === "input") {
+      inputContainer.style.display = "block";
+    } else {
+      inputContainer.style.display = "none";
+    }
+  });
+</script>*@

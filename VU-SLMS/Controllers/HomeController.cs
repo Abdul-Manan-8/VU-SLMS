@@ -97,7 +97,7 @@ namespace VU_SLMS.Controllers
             {
                 return View(emp);
             }
-            return View(nameof(EmployeeList));
+            return RedirectToAction(nameof(Notfound));
         }
         #endregion
         #region Benefit
@@ -135,6 +135,30 @@ namespace VU_SLMS.Controllers
                 }
             }
             return View();
+        }
+        public IActionResult BenefitList()
+        {
+            return View(_context.Benefits.ToList());
+        }
+        public IActionResult BenefitDetail(int? id)
+        {
+            var ben = _context.Benefits.Find(id);
+            if (ben != null)
+            {
+                return View(ben);
+            }
+            return RedirectToAction(nameof(Notfound));
+        }
+        public IActionResult DeleteBenefit(int? id)
+        {
+            var ben = _context.Benefits.Find(id);
+            if (ben != null)
+            {
+                _context.Benefits.Remove(ben);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(BenefitList));
+            }
+            return View(nameof(Notfound));
         }
         #endregion
     }
