@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using VU_SLMS.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.VisualBasic;
@@ -30,6 +31,32 @@ namespace VU_SLMS.Controllers
         {
             return View();
         }
+        public IActionResult Login()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Login(SystemUser systemuser)
+        {
+            var User = _context.SystemUsers.Where(a => a.UserName == systemuser.UserName && a.Password == systemuser.Password).FirstOrDefault();
+            if (User == null)
+            {
+                ViewBag.Error = "Invalid user name or password";
+                return View();
+            }
+            //Success Login
+            HttpContext.Session.SetInt32("Id", User.Id);
+            HttpContext.Session.SetString("UserName", User.UserName);
+            HttpContext.Session.SetInt32("Type", User.Type.Value);
+
+            return RedirectToAction(nameof(Index));
+        }
+        
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction(nameof(Login));
+        }
         public IActionResult Notfound()
         {
             return View();
@@ -40,6 +67,63 @@ namespace VU_SLMS.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        #region Systemuser
+        [HttpGet]
+        public IActionResult AddSystemUser()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddSystemUser(SystemUser systemUser)
+        {
+            systemUser.Type = 2;
+            _context.SystemUsers.Add(systemUser);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(SystemUserList));
+        }
+        [HttpGet]
+        public IActionResult UpdateSystemUser(int? id)
+        {
+            var U = _context.SystemUsers.Find(id);
+            if(U != null)
+            {
+                return View(U);
+            }
+            return RedirectToAction(nameof(Notfound));
+        }
+        [HttpPost]
+        public IActionResult UpdateSystemUser(SystemUser systemUser)
+        {
+            if (systemUser != null)
+            {
+                _context.SystemUsers.Update(systemUser);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Notfound));
+        }
+        public IActionResult SystemUserList()
+        {
+            if(HttpContext.Session.GetInt32("Type") == 2)
+            {
+                var user = _context.SystemUsers.Where(u => u.Id == HttpContext.Session.GetInt32("Id")).ToList();
+                return View(user);
+            }
+            var lst = _context.SystemUsers.Where(u => u.Type == 1 || u.Type == 2).ToList();
+            return View(lst);
+        }
+        public IActionResult DeleteSystemUser(int? id)
+        {
+            var U = _context.SystemUsers.Find(id);
+            if(U != null)
+            {
+                _context.SystemUsers.Remove(U);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(SystemUserList));
+            }
+            return RedirectToAction(nameof(Notfound));
+        }
+        #endregion
         #region Employee
         [HttpGet]
         public IActionResult AddUpdateEmployee(int? id)
@@ -84,6 +168,12 @@ namespace VU_SLMS.Controllers
             var emp = _context.Employees.Find(id);
             if (emp != null)
             {
+                var ben = _context.Benefits.Where(b => b.EmployeeId == emp.Id).ToList();
+                foreach(var d in ben)
+                {
+                    _context.Benefits.Remove(d);
+                    _context.SaveChanges();
+                }
                 _context.Employees.Remove(emp);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(EmployeeList));
@@ -138,16 +228,32 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult BenefitList()
         {
-            return View(_context.Benefits.ToList());
+            var list = from ben in _context.Benefits
+                       from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
+                       select new BenefitModel
+                       {
+                           Id = ben.Id,
+                           Name = ben.Name,
+                           Description = ben.Description,
+                           EmployeeId = ben.EmployeeId,
+                           EmployeeName = emp.Name,
+                           DateOfIssue = ben.DateOfIssue,
+                       };
+            return View(list);
         }
         public IActionResult BenefitDetail(int? id)
         {
-            var ben = _context.Benefits.Find(id);
-            if (ben != null)
-            {
-                return View(ben);
-            }
-            return RedirectToAction(nameof(Notfound));
+            var list = from ben in _context.Benefits.Where(b => b.Id == id)
+                       from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
+                       select new BenefitModel
+                       {
+                           Id = ben.Id,
+                           Name = ben.Name,
+                           EmployeeId = ben.EmployeeId,
+                           EmployeeName = emp.Name,
+                           DateOfIssue = ben.DateOfIssue,
+                       };
+                return View(list);
         }
         public IActionResult DeleteBenefit(int? id)
         {

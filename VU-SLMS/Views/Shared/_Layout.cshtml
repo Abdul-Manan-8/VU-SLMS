@@ -40,6 +40,50 @@
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
+                <li class="nav-item dropdown pe-3">
+                    @if(!string.IsNullOrEmpty(Context.Session.GetString("UserName")))
+                    {
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                        <span class="d-none d-md-block dropdown-toggle ps-2">@Context.Session.GetString("UserName")</span>
+                    </a><!-- End Profile Iamge Icon -->
+
+                    
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                        <li class="dropdown-header">
+                            <h6>@Context.Session.GetString("UserName")</h6>
+                            <span></span>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                            <a href="/Home/UpdateSystemUser?id=@Context.Session.GetInt32("Id")" class="dropdown-item d-flex align-items-center">
+                                <i class="bi bi-gear"></i>
+                                <span>Change Password</span>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+
+                        <li>
+                                <a class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                <i class="bi bi-box-arrow-right"></i>
+                                <span>Logout</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                    
+                    }
+                    else
+                    {
+                    <a class="nav-link nav-profile d-flex align-items-center pe-0" href="/home/Login">
+                        <span class="d-none d-md-block ps-2">Login</span>
+                    </a>
+                    }<!-- End Profile Dropdown Items -->
+                </li>
             </ul>
         </nav><!-- End Icons Navigation -->
 
@@ -59,7 +103,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Employee</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-people-fill"></i><span>Employee</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -73,11 +117,11 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Components Nav -->
+      </li>
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i><span>Leaves</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-calendar-plus-fill"></i><span>Leaves</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -90,7 +134,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-layout-text-window-reverse"></i><span>Other Benefits</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-gift-fill"></i><span>Other Benefits</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -104,10 +148,52 @@
             </a>
           </li>
         </ul>
-      </li><!-- End Tables Nav -->
+      </li>
+
+            @if (Context.Session.GetInt32("Type") == 1 || Context.Session.GetInt32("Type") == 0)
+        {
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person-square"></i><span>SystemUsers</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a asp-action="AddSystemUser">
+                        <i class="bi bi-circle"></i><span>Add SystemUser</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="SystemUserList">
+                        <i class="bi bi-circle"></i><span>SystemUser List</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        }
     </ul>
 
   </aside><!-- End Sidebar-->
+    <!--Logout Model-->
+    <!--Logout Model-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log Out</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure to Logout to the system!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a href="/home/logout" type="button" class="btn btn-primary">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Logout Model End-->
+
 
     <main id="main" class="main">
 
@@ -162,6 +248,11 @@
 
     <!-- Template Main JS File -->
     <script src="~/assets/js/main.js"></script>
+
+    <!-- Default JS File -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
+    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

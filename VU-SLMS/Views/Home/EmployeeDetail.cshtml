@@ -7,28 +7,47 @@
         <h5 class="card-title">@ViewData["Title"]</h5>
         <dl class="row">
             <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.Name)
+                <strong>Name: </strong>
             </dt>
             <dd class="col-sm-8">
                 @Model.Name
             </dd>
             <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.Designation)
+                <strong>Designation: </strong>
             </dt>
             <dd class="col-sm-8">
                 @Model.Designation
             </dd>
             <dt class="col-sm-4">
-                @Html.DisplayNameFor(model => model.JoiningDate)
+                <strong>Gender: </strong>
+            </dt>
+            <dd class="col-sm-8">
+                @Model.Gender
+            </dd>
+            <dt class="col-sm-4">
+                <strong>Phone No: </strong>
+            </dt>
+            <dd class="col-sm-8">
+                @if(Model.PhoneNo != null)
+                {
+                    <p>+92</p>
+                }
+                @Model.PhoneNo
+            </dd>
+            <dt class="col-sm-4">
+                <strong>Joining Date: </strong>
             </dt>
             <dd class="col-sm-8">
                 @Model.JoiningDate.ToShortDateString()
             </dd>
             </dl>
         <div class="mt-3">
-                <a asp-action="EmployeeList" class="btn btn-sm btn-outline-info"><i class="bi bi-trash-fill"> Back to List</i></a>
-                <a asp-action="AddUpdateEmployee" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-list-ul"> Edit</i></a>
+            <a asp-action="EmployeeList" class="btn btn-sm btn-outline-info"><i class="bi bi-list-ul"> Back to List</i></a>
+            <a asp-action="AddUpdateEmployee" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>
+            @if (Context.Session.GetInt32("Type") == 1 || Context.Session.GetInt32("Type") == 0)
+            {
                 <a asp-action="DeleteEmployee" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"> Delete</i></a>
+            }
         </div>
     </div>
 </div>

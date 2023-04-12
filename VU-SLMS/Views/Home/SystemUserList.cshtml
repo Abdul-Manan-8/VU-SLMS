@@ -1,0 +1,39 @@
+﻿@model IEnumerable<VU_SLMS.Models.SystemUser>
+@{
+    ViewData["Title"] = "SystemUser List";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@ViewData["Title"]</h5>
+
+        <!-- Table with stripped rows -->
+        <table class="table datatable">
+            <thead>
+                <tr>
+                    <th scope="col">UserName</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var L in Model)
+                {
+                    <tr>
+                        <td>@L.UserName</td>
+                        <td>@L.Password</td>
+                        <td>
+                            <a asp-action="UpdateSystemUser" asp-route-id="@L.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>
+                            @if (Context.Session.GetInt32("Type") == 1 || Context.Session.GetInt32("Type") == 0)
+                            {
+                                <a asp-action="DeleteSystemUser" asp-route-id="@L.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"> Delete</i></a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+</div>

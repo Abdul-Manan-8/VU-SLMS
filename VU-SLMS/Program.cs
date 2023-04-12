@@ -16,6 +16,13 @@ builder.Services.AddDbContext<vu_slms_dbContext>(options =>
     options.UseSqlServer(MyDBCS));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+//session
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(o => {
+
+    o.IdleTimeout = TimeSpan.FromMinutes(300);
+});
+
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
@@ -41,10 +48,11 @@ app.UseRouting();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Login}");
 app.MapRazorPages();
 
 app.Run();

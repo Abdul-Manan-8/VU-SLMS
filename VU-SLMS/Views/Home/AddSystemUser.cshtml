@@ -1,0 +1,36 @@
+﻿@model VU_SLMS.Models.SystemUser
+@{
+    ViewData["Title"] = "Add SystemUser";
+}
+<div class="card row">
+    <div class="card-body col-md-12 col-lg-10">
+        <h5 class="card-title">@ViewData["Title"]</h5>
+        <form action="AddSystemUser" method="post">
+            <div class="row mb-3">
+                <div class="col-sm-10">
+                    <div class="form-floating mb-3">
+                        <input asp-for="UserName" type="text" class="form-control" id="floatingInput" placeholder="UserName" required>
+                        <label for="floatingInput">UserName</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Password" type="password" class="form-control" id="floatingInput" placeholder="Password" required>
+                        <label for="floatingInput">Password</label>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Add SystemUser</button>
+                    <button type="reset" class="btn btn-sm  btn-outline-warning">Reset Form</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            //alert("Hi");
+        });
+    </script>
+}
+
+
+

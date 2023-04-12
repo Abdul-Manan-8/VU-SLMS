@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VU_SLMS.Models.Benefit>
+﻿@model IEnumerable<VU_SLMS.DTOs.BenefitModel>
 @{
     ViewData["Title"] = "Benefit List";
 }
@@ -19,10 +19,10 @@
             <tbody>
                 @foreach(var L in Model){
                 <tr>
-                    <td>@L.EmployeeId</td>
+                    <td>@L.EmployeeName</td>
                     <td>@L.Name</td>
                     <td>
-                        <a asp-action="BenefitDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info">Detail</a>
+                            <a asp-action="BenefitDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
                     </td>
                 </tr>
                 }

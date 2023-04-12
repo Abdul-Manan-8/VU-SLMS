@@ -19,15 +19,16 @@ namespace VU_SLMS.Models
         public virtual DbSet<Benefit> Benefits { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
         public virtual DbSet<Leave> Leaves { get; set; } = null!;
+        public virtual DbSet<SystemUser> SystemUsers { get; set; } = null!;
 
-//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//        {
-//            if (!optionsBuilder.IsConfigured)
-//            {
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=DESKTOP-EOVL406\\SQLEXPRESS03;Database=vu_slms_db; Trusted_Connection=True;");
-//            }
-//        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=DESKTOP-EOVL406\\SQLEXPRESS03;Database=vu_slms_db; Trusted_Connection=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +49,10 @@ namespace VU_SLMS.Models
                 entity.Property(e => e.DateOfIssue)
                     .HasColumnType("date")
                     .HasColumnName("date_of_issue");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(500)
+                    .HasColumnName("description");
 
                 entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
 
@@ -75,6 +80,11 @@ namespace VU_SLMS.Models
                     .HasMaxLength(250)
                     .HasColumnName("designation");
 
+                entity.Property(e => e.Gender)
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("gender");
+
                 entity.Property(e => e.JoiningDate)
                     .HasColumnType("date")
                     .HasColumnName("joining_date");
@@ -83,6 +93,10 @@ namespace VU_SLMS.Models
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("name");
+
+                entity.Property(e => e.PhoneNo)
+                    .HasColumnType("numeric(18, 0)")
+                    .HasColumnName("phone_no");
             });
 
             modelBuilder.Entity<Leave>(entity =>
@@ -118,6 +132,23 @@ namespace VU_SLMS.Models
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<SystemUser>(entity =>
+            {
+                entity.ToTable("system_user");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Password)
+                    .HasMaxLength(50)
+                    .HasColumnName("password");
+
+                entity.Property(e => e.Type).HasColumnName("type");
+
+                entity.Property(e => e.UserName)
+                    .HasMaxLength(50)
+                    .HasColumnName("user_name");
             });
 
             OnModelCreatingPartial(modelBuilder);

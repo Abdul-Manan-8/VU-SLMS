@@ -21,6 +21,19 @@
                         <label for="floatingPassword">Designation</label>
                     </div>
                     <div class="form-floating mb-3">
+                        <select asp-for="Gender" class="form-select" id="myDropdown" aria-label="Floating label select example" required>
+                            <option selected value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label for="floatingSelect">Gender</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="PhoneNo" type="number" class="form-control" id="floatingPassword" placeholder="Phone No. after +92 or 0" required>
+                        <label for="floatingPassword">Phone No. "after +92 or 0"</label>
+                    </div>
+                    <div class="form-floating mb-3">
                         <input asp-for="JoiningDate" type="text" class="form-control" id="floatingdate" placeholder="Joining Date" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" autocomplete="off" required>
                         <label for="floatingdate">Joining Date</label>
                     </div>

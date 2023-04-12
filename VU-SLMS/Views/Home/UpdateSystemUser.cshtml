@@ -1,0 +1,59 @@
+﻿@model VU_SLMS.Models.SystemUser
+@{
+    ViewData["Title"] = "Update SystemUser";
+}
+<div class="card row">
+    <div class="card-body col-md-12 col-lg-10">
+        <h5 class="card-title">@ViewData["Title"]</h5>
+        <form action="UpdateSystemUser" method="post">
+            <div class="row mb-3">
+                <div class="col-sm-10">
+                    <input type="hidden" asp-for="Id"/>
+                    <div class="form-floating mb-3">
+                        <input asp-for="UserName" type="text" class="form-control" id="floatingInput" placeholder="UserName" required>
+                        <label for="floatingInput">UserName</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Password" type="text" class="form-control" id="floatingInput" placeholder="Password" required>
+                        <label for="floatingInput">Password</label>
+                    </div>
+                    @if (Context.Session.GetInt32("Type") == 0)
+                    {
+                        <div class="form-floating mb-3">
+                            <select asp-for="Type" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                                <option selected value="">Select Authority</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Other</option>
+                            </select>
+                            <label for="floatingSelect">Authority</label>
+                        </div>
+                        
+                    }
+                    else
+                    {
+                        <div class="form-floating mb-3">
+                            <select asp-for="Type" class="form-select" id="floatingSelect" aria-label="Floating label select example" required hidden>
+                                <option selected value="">Select Authority</option>
+                                <option value="1">Admin</option>
+                                <option value="2">Other</option>
+                            </select>
+                        </div>
+                    }
+                    <button type="submit" class="btn btn-sm btn-outline-primary">Update SystemUser</button>
+                    <button type="reset" class="btn btn-sm  btn-outline-warning">Reset Form</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $(function () {
+            //alert("Hi");
+        });
+    </script>
+}
+
+
+

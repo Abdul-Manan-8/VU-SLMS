@@ -24,14 +24,20 @@
                         <label for="floatingSelect">Employee Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <select asp-for="Name" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                    <select asp-for="Name" class="form-select" id="myDropdown" aria-label="Floating label select example" required>
                             <option selected value="">Select Benefit Type</option>
                             <option value="Loan">Loan</option>
+                            <option value="Medical Allowance">Medical Allowance</option>
                             <option value="Uniform">Uniform</option>
                             <option value="Shoes">Shoes</option>
                             <option value="Jacket">Jacket</option>
+                            <option value="Other">Other</option>
                         </select>
                         <label for="floatingSelect">Benefit</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="Description" class="form-control" placeholder="Benefit Description" id="floatingTextarea" style="height: 100px;"></textarea>
+                        <label for="floatingTextarea">Benefit Description</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input asp-for="DateOfIssue" type="text" class="form-control" id="floatingdate" placeholder="Date of Issue" onfocus="(this.type='date')" onblur="if(!this.value) this.type='text'" autocomplete="off" required>
@@ -52,37 +58,13 @@
     </div>
 </div>
 
-@*@section scripts{
+@section scripts{
     <script>
         $( function () {
-
+            //alert("Hi");
         });
     </script>
-}*@
+}
 
 
 
-@*<select id="myDropdown">
-  <option value="">Select an option</option>
-  <option value="option1">Option 1</option>
-  <option value="option2">Option 2</option>
-  <option value="input">Enter a value</option>
-</select>
-
-<div id="inputContainer" style="display: none;">
-  <input type="text" id="inputValue">
-</div>
-
-<script>
-  const dropdown = document.getElementById("myDropdown");
-  const inputContainer = document.getElementById("inputContainer");
-
-  dropdown.addEventListener("change", function() {
-    const selectedOption = this.value;
-    if (selectedOption === "input") {
-      inputContainer.style.display = "block";
-    } else {
-      inputContainer.style.display = "none";
-    }
-  });
-</script>*@
