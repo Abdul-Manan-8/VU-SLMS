@@ -228,7 +228,7 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult BenefitList()
         {
-            var list = from ben in _context.Benefits
+            var list = (from ben in _context.Benefits
                        from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
                        select new BenefitModel
                        {
@@ -238,12 +238,12 @@ namespace VU_SLMS.Controllers
                            EmployeeId = ben.EmployeeId,
                            EmployeeName = emp.Name,
                            DateOfIssue = ben.DateOfIssue,
-                       };
+                       }).ToList();
             return View(list);
         }
         public IActionResult BenefitDetail(int? id)
         {
-            var list = from ben in _context.Benefits.Where(b => b.Id == id)
+            var list = (from ben in _context.Benefits.Where(b => b.Id == id)
                        from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
                        select new BenefitModel
                        {
@@ -252,8 +252,8 @@ namespace VU_SLMS.Controllers
                            EmployeeId = ben.EmployeeId,
                            EmployeeName = emp.Name,
                            DateOfIssue = ben.DateOfIssue,
-                       };
-                return View(list);
+                       }).FirstOrDefault();
+            return View(list);
         }
         public IActionResult DeleteBenefit(int? id)
         {
