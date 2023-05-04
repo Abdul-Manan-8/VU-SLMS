@@ -125,8 +125,13 @@
         </a>
         <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="forms-elements.html">
-              <i class="bi bi-circle"></i><span>Manage Leaves</span>
+            <a asp-action="AddUpdateLeave">
+              <i class="bi bi-circle"></i><span>Add Leaves</span>
+            </a>
+          </li>
+          <li>
+            <a asp-action="LeaveList">
+               <i class="bi bi-circle"></i><span>Leaves List</span>
             </a>
           </li>
         </ul>

@@ -249,6 +249,7 @@ namespace VU_SLMS.Controllers
                        {
                            Id = ben.Id,
                            Name = ben.Name,
+                           Description = ben.Description,
                            EmployeeId = ben.EmployeeId,
                            EmployeeName = emp.Name,
                            DateOfIssue = ben.DateOfIssue,
@@ -263,6 +264,90 @@ namespace VU_SLMS.Controllers
                 _context.Benefits.Remove(ben);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(BenefitList));
+            }
+            return View(nameof(Notfound));
+        }
+        #endregion
+        #region Leaves
+        [HttpGet]
+        public IActionResult AddUpdateLeave(int? id)
+        {
+            ViewBag.Totalemp = _context.Employees.ToList();
+            if (id != null && id != 0)
+            {
+                var lev = _context.Leaves.Find(id);
+                return View(lev);
+            }
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddUpdateleave(Leave leave)
+        {
+            if (leave.Id == 0)
+            {
+                leave.CreatedDate = DateTime.Now;
+                leave.CreatedBy = "Admin";
+                leave.LeaveCount = (leave.DateTo - leave.DateFrom).Days + 1;
+                _context.Leaves.Add(leave);
+                _context.SaveChanges();
+                return RedirectToAction("LeaveDetail", new { id = leave.Id });
+            }
+            else
+            {   
+                if (leave != null)
+                {
+                    leave.CreatedDate = DateTime.Now;
+                    leave.CreatedBy = "Admin";
+                    leave.LeaveCount = (leave.DateTo - leave.DateFrom).Days + 1;
+                    _context.Update(leave);
+                    _context.SaveChanges();
+                    return RedirectToAction("LeaveDetail", new { id = leave.Id });
+                }
+            }
+            return RedirectToAction(nameof(LeaveDetail));
+        }
+        public IActionResult LeaveList()
+        {
+            var list = (from lev in _context.Leaves
+                        from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
+                        select new LeaveModel
+                        {
+                            Id = lev.Id,
+                            Name = lev.Name,
+                            EmployeeId = lev.EmployeeId,
+                            EmployeeName = emp.Name,
+                            DateFrom = lev.DateFrom,
+                            DateTo = lev.DateTo,
+                            Leavecount = lev.LeaveCount,
+                            Description = lev.Description
+                        }).ToList();
+            return View(list);
+        }
+        public IActionResult LeaveDetail(int id)
+        {
+            var list = (from lev in _context.Leaves.Where(l => l.Id == id)
+                        from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
+                        select new LeaveModel
+                        {
+                            Id = lev.Id,
+                            Name = lev.Name,
+                            EmployeeId = lev.EmployeeId,
+                            EmployeeName = emp.Name,
+                            DateFrom = lev.DateFrom,
+                            DateTo = lev.DateTo,
+                            Leavecount = lev.LeaveCount,
+                            Description = lev.Description
+                        }).FirstOrDefault();
+            return View(list);
+        }
+        public IActionResult DeleteLeave(int? id)
+        {
+            var lev = _context.Leaves.Find(id);
+            if (lev != null)
+            {
+                _context.Leaves.Remove(lev);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(LeaveList));
             }
             return View(nameof(Notfound));
         }

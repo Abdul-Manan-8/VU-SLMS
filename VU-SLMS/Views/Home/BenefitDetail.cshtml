@@ -35,7 +35,10 @@
         <div class="mt-3">
             <a asp-action="BenefitList" class="btn btn-sm btn-outline-info"><i class="bi bi-list-ul "> Back to List</i></a>
             <a asp-action="AddUpdateBenefit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>
-            <a asp-action="DeleteBenefit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"> Delete</i></a>
+            @if (Context.Session.GetInt32("Type") == 1 || Context.Session.GetInt32("Type") == 0)
+            {
+                <a asp-action="DeleteBenefit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"> Delete</i></a>
+            }
         </div>
     </div>
 </div>

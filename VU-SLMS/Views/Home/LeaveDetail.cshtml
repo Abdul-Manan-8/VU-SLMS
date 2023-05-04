@@ -1,0 +1,56 @@
+﻿@model VU_SLMS.DTOs.LeaveModel
+
+@{
+    ViewData["Title"] = "Leave Detail";
+}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@ViewData["Title"]</h5>
+        <dl class="row">
+            <dt class="col-sm-4">
+                <strong>Employee Name: </strong>
+            </dt>
+            <dd class="col-sm-8">
+                @Model.EmployeeName
+            </dd>
+            <dt class="col-sm-4">
+                <strong>Leave Type: </strong>
+            </dt>
+            <dd class="col-sm-8">
+                @Model.Name
+            </dd>
+            <dt class="col-sm-4">
+                <strong>Leave Description: </strong>
+            </dt>
+            <dd class="col-sm-8">
+                @Model.Description
+            </dd>
+            <dt class="col-sm-4">
+                <strong>No. of Leaves: </strong>
+            </dt>
+            <dd class="col-sm-8">
+                @Model.Leavecount
+            </dd>
+            <dt class="col-sm-4">
+                <strong>Date From: </strong>
+            </dt>
+            <dd class="col-sm-8">
+                @Model.DateFrom.ToShortDateString()
+            </dd>
+            <dt class="col-sm-4">
+                <strong>Date To: </strong>
+            </dt>
+            <dd class="col-sm-8">
+                @Model.DateTo.ToShortDateString()
+            </dd>
+        </dl>
+        <div class="mt-3">
+            <a asp-action="LeaveList" class="btn btn-sm btn-outline-info"><i class="bi bi-list-ul "> Back to List</i></a>
+            <a asp-action="AddUpdateLeave" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>
+            @if (Context.Session.GetInt32("Type") == 1 || Context.Session.GetInt32("Type") == 0)
+            {
+                <a asp-action="DeleteLeave" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"> Delete</i></a>
+            }
+        </div>
+    </div>
+</div>

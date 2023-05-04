@@ -17,8 +17,13 @@
                         <label for="floatingInput">Employee Name</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Designation" type="text" class="form-control" id="floatingPassword" placeholder="Designation" required>
-                        <label for="floatingPassword">Designation</label>
+                        <select asp-for="Designation" class="form-select" id="myDropdown" aria-label="Floating label select example" required>
+                            <option selected value="">Select Designation</option>
+                            <option value="Canteen">Canteen</option>
+                            <option value="Driver">Driver</option>
+                            <option value="Security">Security</option>
+                        </select>
+                        <label for="floatingSelect">Designation</label>
                     </div>
                     <div class="form-floating mb-3">
                         <select asp-for="Gender" class="form-select" id="myDropdown" aria-label="Floating label select example" required>
