@@ -57,11 +57,6 @@ namespace VU_SLMS.Controllers
             }
             return View(employees);
         }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
         public IActionResult Login()
         {
             return View();

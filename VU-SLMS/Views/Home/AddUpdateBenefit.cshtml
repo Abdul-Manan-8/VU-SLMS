@@ -3,6 +3,18 @@
     ViewData["Title"] = "Add/Update Benefit";
     var emp = ViewBag.Totalemp;
 }
+
+<div class="pagetitle">
+    <h1>@ViewData["Title"]</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home/index">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+</div>
+
 <div class="card row">
     <div class="card-body col-md-12 col-lg-10">
         <h5 class="card-title">@ViewData["Title"]</h5>

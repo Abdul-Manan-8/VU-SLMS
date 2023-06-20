@@ -5,6 +5,17 @@
     var Name = ViewBag.EmployeName;
 }
 
+<div class="pagetitle">
+    <h1>@ViewData["Title"]</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home/index">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+</div>
+
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">@ViewData["Title"] @if(ViewBag.EmployeName != null){<b>@Name</b>}</h5>
@@ -16,6 +27,7 @@
                 Select Employee 
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="/home/leavelist">All employees</a></li>
                 @foreach(var E in employeelist)
                 {
                     <li><a class="dropdown-item" href="/home/leavelist?id=@E.Id">@E.Name</a></li>
