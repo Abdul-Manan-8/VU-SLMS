@@ -6,6 +6,9 @@ using Microsoft.VisualBasic;
 using System.Diagnostics;
 using System.Net.Mail;
 using VU_SLMS.Models;
+using System.Net.Http.Headers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace VU_SLMS.Controllers
 {
@@ -24,7 +27,35 @@ namespace VU_SLMS.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            ViewBag.TotalEmp = _context.Employees.Count();
+            ViewBag.TotalBen = _context.Benefits.Count();
+            List<Employee> employees = new List<Employee>();
+            foreach (var item in _context.Employees.ToList())
+            {
+                var leave = _context.Leaves.Where(l => l.Name == "Regular" && l.EmployeeId == item.Id).OrderByDescending(date => date.DateFrom).FirstOrDefault();
+                if (leave != null)
+                {
+                    var count = (DateTime.Now - leave.DateFrom).Days;
+                    if (count > 80)
+                    {
+                        Employee newemp = new Employee();
+                        newemp = _context.Employees.Where(e => e.Id == item.Id).FirstOrDefault();
+                        employees.Add(newemp);
+                    }
+                }
+                else
+                {
+                    var empl = _context.Employees.Where(e => e.Id == item.Id).FirstOrDefault();
+                    var count = (DateTime.Now - empl.JoiningDate).Days;
+                    if (count > 80)
+                    {
+                        Employee newemp = new Employee();
+                        newemp = _context.Employees.Where(e => e.Id == item.Id).FirstOrDefault();
+                        employees.Add(newemp);
+                    }
+                }
+            }
+            return View(employees);
         }
 
         public IActionResult Privacy()
@@ -306,22 +337,50 @@ namespace VU_SLMS.Controllers
             }
             return RedirectToAction(nameof(LeaveDetail));
         }
-        public IActionResult LeaveList()
+        public IActionResult LeaveList(int? id)
         {
-            var list = (from lev in _context.Leaves
-                        from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
-                        select new LeaveModel
-                        {
-                            Id = lev.Id,
-                            Name = lev.Name,
-                            EmployeeId = lev.EmployeeId,
-                            EmployeeName = emp.Name,
-                            DateFrom = lev.DateFrom,
-                            DateTo = lev.DateTo,
-                            Leavecount = lev.LeaveCount,
-                            Description = lev.Description
-                        }).ToList();
-            return View(list);
+            if (id != null)
+            {
+                var Emp = _context.Employees.Where(e => e.Id == id).FirstOrDefault();
+                if(Emp != null)
+                {
+                    var list = (from lev in _context.Leaves.Where(e => e.EmployeeId == Emp.Id)
+                                from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
+                                select new LeaveModel
+                                {
+                                    Id = lev.Id,
+                                    Name = lev.Name,
+                                    EmployeeId = lev.EmployeeId,
+                                    EmployeeName = emp.Name,
+                                    DateFrom = lev.DateFrom,
+                                    DateTo = lev.DateTo,
+                                    Leavecount = lev.LeaveCount,
+                                    Description = lev.Description
+                                }).ToList();
+                    ViewBag.EmployeName = "for " + Emp.Name;
+                    ViewBag.Totalemp = _context.Employees.ToList();
+                    return View(list.OrderByDescending(date => date.DateFrom));
+                }
+                return RedirectToAction(nameof(Notfound));
+            }
+            else
+            {
+                var list = (from lev in _context.Leaves
+                            from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
+                            select new LeaveModel
+                            {
+                                Id = lev.Id,
+                                Name = lev.Name,
+                                EmployeeId = lev.EmployeeId,
+                                EmployeeName = emp.Name,
+                                DateFrom = lev.DateFrom,
+                                DateTo = lev.DateTo,
+                                Leavecount = lev.LeaveCount,
+                                Description = lev.Description
+                            }).ToList();
+                ViewBag.Totalemp = _context.Employees.ToList();
+                return View(list.OrderByDescending(date => date.DateFrom));
+            }
         }
         public IActionResult LeaveDetail(int id)
         {

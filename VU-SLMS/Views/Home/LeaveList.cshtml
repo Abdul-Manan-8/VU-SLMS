@@ -1,11 +1,27 @@
 ﻿@model IEnumerable<VU_SLMS.DTOs.LeaveModel>
 @{
     ViewData["Title"] = "Leave List";
+    var employeelist = ViewBag.Totalemp;
+    var Name = ViewBag.EmployeName;
 }
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">@ViewData["Title"]</h5>
+        <h5 class="card-title">@ViewData["Title"] @if(ViewBag.EmployeName != null){<b>@Name</b>}</h5>
+
+
+        <!-- Employee dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Employee 
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                @foreach(var E in employeelist)
+                {
+                    <li><a class="dropdown-item" href="/home/leavelist?id=@E.Id">@E.Name</a></li>
+                }
+            </ul>
+        </div>
 
         <!-- Table with stripped rows -->
         <table class="table datatable">
@@ -13,6 +29,7 @@
                 <tr>
                     <th scope="col">Employee Name</th>
                     <th scope="col">Leave Type</th>
+                    <th scope="col">Leave To/From</th>
                     <th scope="col">Leave Count</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -23,6 +40,7 @@
                     <tr>
                         <td>@L.EmployeeName</td>
                         <td>@L.Name</td>
+                        <td>@L.DateFrom.ToShortDateString() -- @L.DateTo.ToShortDateString()</td>
                         <td>@L.Leavecount</td>
                         <td>
                             <a asp-action="LeaveDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
