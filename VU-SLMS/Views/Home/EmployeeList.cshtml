@@ -23,6 +23,7 @@
             <thead>
                 <tr>
                     <th scope="col">Name</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Desgination</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -31,7 +32,17 @@
                 @foreach(var L in Model){
                 <tr>
                     <td>@L.Name</td>
-                    <td>@L.Designation</td>
+                        <td>
+                            @if (L.Image != null)
+                            {
+                                <img src="@L.Image" class="img-thumbnail" style="max-height: 50px;" />
+                            }
+                            else
+                            {
+                                <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 50px;" />
+                            }
+                        </td>
+                        <td>@L.Designation</td>
                     <td>
                             <a asp-action="EmployeeDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
                     </td>

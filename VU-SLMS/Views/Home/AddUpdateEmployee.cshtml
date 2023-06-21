@@ -17,10 +17,11 @@
 <div class="card row">
     <div class="card-body col-md-12 col-lg-10">
         <h5 class="card-title">@ViewData["Title"]</h5>
-        <form action="AddUpdateEmployee" method="post">
+        <form action="AddUpdateEmployee" enctype="multipart/form-data" method="post">
             @if (Model != null)
             {
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Image" />
             }
             <div class="row mb-3">
                 <div class="col-sm-10">
@@ -28,6 +29,21 @@
                         <input asp-for="Name" type="text" class="form-control" id="floatingInput" placeholder="Name" required>
                         <label for="floatingInput">Employee Name</label>
                     </div>
+                    <div class="form-floating mb-3">
+                        <input id="Image" name="Image" type="file" class="form-control" placeholder="Image">
+                        <label for="Image">Employee Image</label>
+                    </div>
+                    @if (Model != null)
+                    {
+                        @if(Model.Image != null)
+                        {
+                            <img src="@Model.Image" class="img-thumbnail" style="max-height: 100px;" />
+                        }
+                        else
+                        {
+                            <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 100px;" />
+                        }
+                    }
                     <div class="form-floating mb-3">
                         <select asp-for="Designation" class="form-select" id="myDropdown" aria-label="Floating label select example" required>
                             <option selected value="">Select Designation</option>

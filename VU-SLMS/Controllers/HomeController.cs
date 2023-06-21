@@ -163,10 +163,21 @@ namespace VU_SLMS.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddUpdateEmployee(Employee employee)
+        public IActionResult AddUpdateEmployee(Employee employee, IFormFile? Image)
         {
             if (employee.Id == 0)
             {
+                //to add image and its address
+                if (Image != null)
+                {
+                    string FinalFilePathVirtual = "/data/" + Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
+
+                    using (FileStream FS = new FileStream(_he.WebRootPath + FinalFilePathVirtual, FileMode.Create))
+                    {
+                        Image.CopyTo(FS);
+                    }
+                    employee.Image = FinalFilePathVirtual;
+                }
                 employee.CreatedDate = DateTime.Now;
                 employee.CreatedBy = HttpContext.Session.GetString("UserName");
                 _context.Employees.Add(employee);
@@ -178,6 +189,17 @@ namespace VU_SLMS.Controllers
             {
                 if (employee != null)
                 {
+                    //to update image and its address
+                    if (Image != null)
+                    {
+                        string FinalFilePathVirtual = "/data/" + Guid.NewGuid().ToString() + Path.GetExtension(Image.FileName);
+
+                        using (FileStream FS = new FileStream(_he.WebRootPath + FinalFilePathVirtual, FileMode.Create))
+                        {
+                            Image.CopyTo(FS);
+                        }
+                        employee.Image = FinalFilePathVirtual;
+                    }
                     employee.CreatedDate = DateTime.Now;
                     employee.CreatedBy = HttpContext.Session.GetString("UserName");
                     _context.Update(employee);
@@ -190,7 +212,7 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult EmployeeList()
         {
-            return View(_context.Employees.ToList());
+            return View(_context.Employees.ToList().OrderBy(name => name.Name));
         }
         public IActionResult DeleteEmployee(int? id)
         {
@@ -276,7 +298,7 @@ namespace VU_SLMS.Controllers
                            EmployeeName = emp.Name,
                            DateOfIssue = ben.DateOfIssue,
                        }).ToList();
-            return View(list);
+            return View(list.OrderBy(name => name.Name));
         }
         public IActionResult BenefitDetail(int? id)
         {

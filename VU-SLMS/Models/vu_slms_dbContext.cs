@@ -26,7 +26,7 @@ namespace VU_SLMS.Models
 //            if (!optionsBuilder.IsConfigured)
 //            {
 //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-//                optionsBuilder.UseSqlServer("Server=DESKTOP-EOVL406\\SQLEXPRESS03;Database=vu_slms_db; Trusted_Connection=True;");
+//                optionsBuilder.UseSqlServer("Server=DESKTOP-BFGNC9S\\SQLEXPRESS;Database=vu_slms_db; Trusted_Connection=True;");
 //            }
 //        }
 
@@ -85,12 +85,16 @@ namespace VU_SLMS.Models
                     .IsUnicode(false)
                     .HasColumnName("gender");
 
+                entity.Property(e => e.Image)
+                    .HasMaxLength(250)
+                    .HasColumnName("image");
+
                 entity.Property(e => e.JoiningDate)
                     .HasColumnType("date")
                     .HasColumnName("joining_date");
 
                 entity.Property(e => e.Name)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("name");
 

@@ -54,11 +54,26 @@
 <!-- Leave Require -->
 @foreach(var E in Model)
 {
-    <div class="col-12">
-        <div class="card top-selling overflow-auto">
-            <div class="card-body pb-0">
-                <h5 class="card-title">Leave Required for <strong>@E.Name</strong> <a href="/home/leavelist?id=@E.Id" class="btn btn-info">leaves deatil</a></h5>
-                
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Leave Required for <strong>@E.Name</strong></h5>
+            <dl class="row">
+                <dt class="col-sm-4">
+                    <strong>Name: </strong>
+                </dt>
+                <dd class="col-sm-8">
+                    @E.Name
+                </dd>
+                <dt class="col-sm-4">
+                    <strong>Joining Date: </strong>
+                </dt>
+                <dd class="col-sm-8">
+                    @E.JoiningDate.ToShortDateString()
+                </dd>
+            </dl>
+            <div class="mt-3">
+                <a href="/home/leavelist?id=@E.Id" class="btn btn-sm btn-outline-info">leaves detail</a>
             </div>
         </div>
     </div>
