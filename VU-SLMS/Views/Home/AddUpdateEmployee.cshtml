@@ -31,9 +31,14 @@
                     <div class="form-floating mb-3">
                         <select asp-for="Designation" class="form-select" id="myDropdown" aria-label="Floating label select example" required>
                             <option selected value="">Select Designation</option>
-                            <option value="Canteen">Canteen</option>
+                            <option value="Canteen Staff">Canteen Staff</option>
                             <option value="Driver">Driver</option>
-                            <option value="Security">Security</option>
+                            <option value="Security Guard">Security Guard</option>
+                            <option value="Cook">Cook</option>
+                            <option value="Cleaning Staff">Cleaning Staff</option>
+                            <option value="Lab Assistant">Lab Assistant</option>
+                            <option value="Electrician">Electrician</option>
+                            <option value="Office Boy">Office Boy</option>
                         </select>
                         <label for="floatingSelect">Designation</label>
                     </div>
@@ -47,7 +52,7 @@
                         <label for="floatingSelect">Gender</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="PhoneNo" type="number" class="form-control" id="floatingPassword" placeholder="Phone No. after +92 or 0" required>
+                        <input asp-for="PhoneNo" type="number" class="form-control" id="floatingPassword" placeholder="Phone No. after +92 or 0">
                         <label for="floatingPassword">Phone No. "after +92 or 0"</label>
                     </div>
                     <div class="form-floating mb-3">

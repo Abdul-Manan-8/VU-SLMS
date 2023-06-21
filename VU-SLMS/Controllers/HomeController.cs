@@ -167,7 +167,7 @@ namespace VU_SLMS.Controllers
             if (employee.Id == 0)
             {
                 employee.CreatedDate = DateTime.Now;
-                employee.CreatedBy = "Admin";
+                employee.CreatedBy = HttpContext.Session.GetString("UserName");
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
                 return RedirectToAction("EmployeeDetail", new { id = employee.Id });
@@ -177,7 +177,7 @@ namespace VU_SLMS.Controllers
                 if (employee != null)
                 {
                     employee.CreatedDate = DateTime.Now;
-                    employee.CreatedBy = "Admin";
+                    employee.CreatedBy = HttpContext.Session.GetString("UserName");
                     _context.Update(employee);
                     _context.SaveChanges();
                     return RedirectToAction("EmployeeDetail", new { id = employee.Id });
@@ -234,7 +234,7 @@ namespace VU_SLMS.Controllers
             if (benefit.Id == 0)
             {
                 benefit.CreatedDate = DateTime.Now;
-                benefit.CreatedBy = "Admin";
+                benefit.CreatedBy = HttpContext.Session.GetString("UserName");
                 _context.Benefits.Add(benefit);
                 _context.SaveChanges();
                 return RedirectToAction("BenefitDetail", new { id = benefit.Id });
@@ -244,7 +244,7 @@ namespace VU_SLMS.Controllers
                 if (benefit != null)
                 {
                     benefit.CreatedDate = DateTime.Now;
-                    benefit.CreatedBy = "Admin";
+                    benefit.CreatedBy = HttpContext.Session.GetString("UserName");
                     _context.Update(benefit);
                     _context.SaveChanges();
                     return RedirectToAction("BenefitDetail", new { id = benefit.Id });
@@ -312,7 +312,7 @@ namespace VU_SLMS.Controllers
             if (leave.Id == 0)
             {
                 leave.CreatedDate = DateTime.Now;
-                leave.CreatedBy = "Admin";
+                leave.CreatedBy = HttpContext.Session.GetString("UserName");
                 leave.LeaveCount = (leave.DateTo - leave.DateFrom).Days + 1;
                 _context.Leaves.Add(leave);
                 _context.SaveChanges();
@@ -323,7 +323,7 @@ namespace VU_SLMS.Controllers
                 if (leave != null)
                 {
                     leave.CreatedDate = DateTime.Now;
-                    leave.CreatedBy = "Admin";
+                    leave.CreatedBy = HttpContext.Session.GetString("UserName");
                     leave.LeaveCount = (leave.DateTo - leave.DateFrom).Days + 1;
                     _context.Update(leave);
                     _context.SaveChanges();
