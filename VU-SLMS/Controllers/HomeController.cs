@@ -24,7 +24,7 @@ namespace VU_SLMS.Controllers
             _context = context;
             _he = he;
         }
-
+        #region Static
         public IActionResult Index()
         {
             ViewBag.TotalEmp = _context.Employees.Count();
@@ -55,7 +55,7 @@ namespace VU_SLMS.Controllers
                     }
                 }
             }
-            return View(employees);
+            return View(employees.OrderBy(name => name.Name));
         }
         public IActionResult Login()
         {
@@ -93,6 +93,7 @@ namespace VU_SLMS.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        #endregion
         #region Systemuser
         [HttpGet]
         public IActionResult AddSystemUser()
@@ -170,6 +171,7 @@ namespace VU_SLMS.Controllers
                 employee.CreatedBy = HttpContext.Session.GetString("UserName");
                 _context.Employees.Add(employee);
                 _context.SaveChanges();
+                TempData["success"] = "Employee added successfully";
                 return RedirectToAction("EmployeeDetail", new { id = employee.Id });
             }
             else
@@ -180,6 +182,7 @@ namespace VU_SLMS.Controllers
                     employee.CreatedBy = HttpContext.Session.GetString("UserName");
                     _context.Update(employee);
                     _context.SaveChanges();
+                    TempData["success"] = "Employee updated successfully";
                     return RedirectToAction("EmployeeDetail", new { id = employee.Id });
                 }
             }
@@ -198,6 +201,12 @@ namespace VU_SLMS.Controllers
                 foreach(var d in ben)
                 {
                     _context.Benefits.Remove(d);
+                    _context.SaveChanges();
+                }
+                var lev = _context.Leaves.Where(b => b.EmployeeId == emp.Id).ToList();
+                foreach (var l in lev)
+                {
+                    _context.Leaves.Remove(l);
                     _context.SaveChanges();
                 }
                 _context.Employees.Remove(emp);
@@ -237,6 +246,7 @@ namespace VU_SLMS.Controllers
                 benefit.CreatedBy = HttpContext.Session.GetString("UserName");
                 _context.Benefits.Add(benefit);
                 _context.SaveChanges();
+                TempData["success"] = "Benefit added successfully";
                 return RedirectToAction("BenefitDetail", new { id = benefit.Id });
             }
             else
@@ -247,6 +257,7 @@ namespace VU_SLMS.Controllers
                     benefit.CreatedBy = HttpContext.Session.GetString("UserName");
                     _context.Update(benefit);
                     _context.SaveChanges();
+                    TempData["success"] = "Benefit updated successfully";
                     return RedirectToAction("BenefitDetail", new { id = benefit.Id });
                 }
             }
@@ -316,6 +327,7 @@ namespace VU_SLMS.Controllers
                 leave.LeaveCount = (leave.DateTo - leave.DateFrom).Days + 1;
                 _context.Leaves.Add(leave);
                 _context.SaveChanges();
+                TempData["success"] = "Leave added successfully";
                 return RedirectToAction("LeaveDetail", new { id = leave.Id });
             }
             else
@@ -327,6 +339,7 @@ namespace VU_SLMS.Controllers
                     leave.LeaveCount = (leave.DateTo - leave.DateFrom).Days + 1;
                     _context.Update(leave);
                     _context.SaveChanges();
+                    TempData["success"] = "Leave updated successfully";
                     return RedirectToAction("LeaveDetail", new { id = leave.Id });
                 }
             }

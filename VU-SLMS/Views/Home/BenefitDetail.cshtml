@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Benefit Detail";
+    var success = TempData["success"];
 }
 
 <div class="pagetitle">
@@ -18,6 +19,14 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">@ViewData["Title"]</h5>
+        @if (success != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-1"></i>
+                @success
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
         <dl class="row">
             <dt class="col-sm-4">
                 <strong>Employee Name: </strong>
@@ -49,8 +58,31 @@
             <a asp-action="AddUpdateBenefit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>
             @if (Context.Session.GetInt32("Type") == 1 || Context.Session.GetInt32("Type") == 0)
             {
-                <a asp-action="DeleteBenefit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"> Delete</i></a>
+                <a class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash-fill"> Delete</i></a>
             }
         </div>
     </div>
 </div>
+
+
+<!--Delete Model-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Benfit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-warning">Warning!!!</h4>
+                <p>This data will not recover if deleted!!!</p>
+                <p>Are you sure to delete this benefit!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="/home/deletebenefit?id=@Model.Id" type="button" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Delete Model End-->
