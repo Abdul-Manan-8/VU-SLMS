@@ -13,6 +13,26 @@
     </nav>
 </div>
 
+<div class="col-md-4">
+    <ul class="conta_icon d_none1">
+        @if (!string.IsNullOrEmpty(Context.Session.GetString("UserName")))
+        {
+            <li><a asp-action="Logout" class="order">@Context.Session.GetString("UserName")</a> </li>
+        }
+        else
+        {
+            <div class="dropdown">
+                <button class="order dropdown-toggle" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Signup</button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a asp-action="SignupCustomer" class="order dropdown-item">Signup as Customer</a> </li>
+                    <li><a asp-action="SignupSeller" class="order dropdown-item">Signup as Seller</a> </li>
+                </ul>
+            </div>
+            <li><a asp-action="Login" class="order">Login</a> </li>
+        }
+    </ul>
+</div>
+
 <div class="row">
     <!-- Employee Card -->
     <div class="col-xxl-6 col-md-6">

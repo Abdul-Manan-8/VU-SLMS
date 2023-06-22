@@ -27,6 +27,10 @@ namespace VU_SLMS.Controllers
         #region Static
         public IActionResult Index()
         {
+            if (HttpContext.Session.GetString("UserName") != null)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             ViewBag.TotalEmp = _context.Employees.Count();
             ViewBag.TotalBen = _context.Benefits.Count();
             List<Employee> employees = new List<Employee>();
@@ -77,13 +81,16 @@ namespace VU_SLMS.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-        
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction(nameof(Login));
         }
         public IActionResult Notfound()
+        {
+            return View();
+        }
+        public IActionResult CantAccess()
         {
             return View();
         }
@@ -94,10 +101,15 @@ namespace VU_SLMS.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         #endregion
+
         #region Systemuser
         [HttpGet]
         public IActionResult AddSystemUser()
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             return View();
         }
         [HttpPost]
@@ -114,6 +126,10 @@ namespace VU_SLMS.Controllers
             var U = _context.SystemUsers.Find(id);
             if(U != null)
             {
+                if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0 || HttpContext.Session.GetString("UserName") != U.UserName)
+                {
+                    return RedirectToAction(nameof(CantAccess));
+                }
                 return View(U);
             }
             return RedirectToAction(nameof(Notfound));
@@ -131,16 +147,19 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult SystemUserList()
         {
-            if(HttpContext.Session.GetInt32("Type") == 2)
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0)
             {
-                var user = _context.SystemUsers.Where(u => u.Id == HttpContext.Session.GetInt32("Id")).ToList();
-                return View(user);
+                return RedirectToAction(nameof(CantAccess));
             }
             var lst = _context.SystemUsers.Where(u => u.Type == 1 || u.Type == 2).ToList();
             return View(lst);
         }
         public IActionResult DeleteSystemUser(int? id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             var U = _context.SystemUsers.Find(id);
             if(U != null)
             {
@@ -151,10 +170,15 @@ namespace VU_SLMS.Controllers
             return RedirectToAction(nameof(Notfound));
         }
         #endregion
+
         #region Employee
         [HttpGet]
         public IActionResult AddUpdateEmployee(int? id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0 || HttpContext.Session.GetInt32("Type") != 2)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             if (id != null && id != 0)
             {
                 var emp = _context.Employees.Find(id);
@@ -216,6 +240,10 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult DeleteEmployee(int? id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             var emp = _context.Employees.Find(id);
             if (emp != null)
             {
@@ -239,6 +267,10 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult EmployeeDetail(int? id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0 || HttpContext.Session.GetInt32("Type") != 2)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             var emp = _context.Employees.Find(id);
             if (emp != null)
             {
@@ -247,10 +279,15 @@ namespace VU_SLMS.Controllers
             return RedirectToAction(nameof(Notfound));
         }
         #endregion
+
         #region Benefit
         [HttpGet]
         public IActionResult AddUpdateBenefit(int? id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0 || HttpContext.Session.GetInt32("Type") != 2)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             ViewBag.Totalemp = _context.Employees.ToList();
             if (id != null && id != 0)
             {
@@ -317,6 +354,10 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult DeleteBenefit(int? id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             var ben = _context.Benefits.Find(id);
             if (ben != null)
             {
@@ -327,10 +368,15 @@ namespace VU_SLMS.Controllers
             return View(nameof(Notfound));
         }
         #endregion
+
         #region Leaves
         [HttpGet]
         public IActionResult AddUpdateLeave(int? id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0 || HttpContext.Session.GetInt32("Type") != 2)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             ViewBag.Totalemp = _context.Employees.ToList();
             if (id != null && id != 0)
             {
@@ -414,6 +460,10 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult LeaveDetail(int id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0 || HttpContext.Session.GetInt32("Type") != 2)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             var list = (from lev in _context.Leaves.Where(l => l.Id == id)
                         from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
                         select new LeaveModel
@@ -431,6 +481,10 @@ namespace VU_SLMS.Controllers
         }
         public IActionResult DeleteLeave(int? id)
         {
+            if (HttpContext.Session.GetInt32("Type") != 1 || HttpContext.Session.GetInt32("Type") != 0)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
             var lev = _context.Leaves.Find(id);
             if (lev != null)
             {
