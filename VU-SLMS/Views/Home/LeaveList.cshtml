@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<VU_SLMS.DTOs.LeaveModel>
 @{
     ViewData["Title"] = "Leave List";
+    var success = TempData["success"];
     var employeelist = ViewBag.Totalemp;
     var Name = ViewBag.EmployeName;
 }
@@ -19,8 +20,14 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">@ViewData["Title"] @if(ViewBag.EmployeName != null){<b>@Name</b>}</h5>
-
-
+        @if (success != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                @success
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
         <!-- Employee dropdown -->
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">

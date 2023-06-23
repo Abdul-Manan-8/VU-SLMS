@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<VU_SLMS.DTOs.BenefitModel>
 @{
+    var success = TempData["success"];
     ViewData["Title"] = "Benefit List";
 }
 
@@ -17,7 +18,14 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">@ViewData["Title"]</h5>
-
+        @if (success != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                @success
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
         <!-- Table with stripped rows -->
         <table class="table datatable">
             <thead>

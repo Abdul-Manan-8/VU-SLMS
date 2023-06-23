@@ -29,7 +29,7 @@
                         <input asp-for="Password" type="text" class="form-control" id="floatingInput" placeholder="Password" required>
                         <label for="floatingInput">Password</label>
                     </div>
-                    @if (Context.Session.GetInt32("Type") == 0)
+                    @if (Context.Session.GetInt32("Type") == 0 && Context.Session.GetInt32("Id") != Model.Id)
                     {
                         <div class="form-floating mb-3">
                             <select asp-for="Type" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
