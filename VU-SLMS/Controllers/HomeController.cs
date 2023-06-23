@@ -141,7 +141,7 @@ namespace VU_SLMS.Controllers
             {
                 _context.SystemUsers.Update(systemUser);
                 _context.SaveChanges();
-                TempData["success"] = "SystemUser Updated succesfully";
+                TempData["success"] = "SystemUser data Updated succesfully";
                 return RedirectToAction(nameof(Index));
             }
             return RedirectToAction(nameof(Notfound));
