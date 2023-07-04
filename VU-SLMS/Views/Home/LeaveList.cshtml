@@ -59,7 +59,7 @@
                     <tr>
                         <td>@L.EmployeeName</td>
                         <td>@L.Name</td>
-                        <td>@L.DateFrom.ToShortDateString() -- @L.DateTo.ToShortDateString()</td>
+                        <td>@L.DateFrom.ToString("dd/MMM/yyyy") -- @L.DateTo.ToString("dd/MMM/yyyy")</td>
                         <td>@L.Leavecount</td>
                         <td>
                             <a asp-action="LeaveDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>

@@ -24,6 +24,7 @@ namespace VU_SLMS.Controllers
             _context = context;
             _he = he;
         }
+
         #region Static
         public IActionResult Index()
         {
