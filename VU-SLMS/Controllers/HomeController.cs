@@ -439,6 +439,16 @@ namespace VU_SLMS.Controllers
                                     Description = lev.Description
                                 }).ToList();
                     ViewBag.EmployeName = "for " + Emp.Name;
+
+                    //Code to get Leaves of this year
+                    var Leaves = _context.Leaves.Where(l => l.EmployeeId == Emp.Id && l.DateFrom.Year == DateTime.Now.Year).ToList();
+                    var count = 0;
+                    foreach (var C in Leaves)
+                    {
+                        count = count + C.LeaveCount;
+                    }
+                    ViewBag.LeavesThisYear = count;
+
                     ViewBag.Totalemp = _context.Employees.ToList();
                     return View(list.OrderByDescending(date => date.DateFrom));
                 }

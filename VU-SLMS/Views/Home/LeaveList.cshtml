@@ -4,6 +4,7 @@
     var success = TempData["success"];
     var employeelist = ViewBag.Totalemp;
     var Name = ViewBag.EmployeName;
+    var LeavesThisYear = ViewBag.LeavesThisYear;
 }
 
 <div class="pagetitle">
@@ -28,6 +29,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
+
+        <h5 class="card-title" style="text-align: right;">This Year Leaves: @if (ViewBag.LeavesThisYear != null)
+            {
+                <b class="text-warning">@LeavesThisYear</b>
+            }</h5>
         <!-- Employee dropdown -->
         <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
