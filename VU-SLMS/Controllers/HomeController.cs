@@ -34,7 +34,7 @@ namespace VU_SLMS.Controllers
             }
             ViewBag.TotalEmp = _context.Employees.Count();
             ViewBag.TotalBen = _context.Benefits.Count();
-            List<Employee> employees = new List<Employee>();
+            List<LeaveRequiredModel> empleave = new List<LeaveRequiredModel>();
             foreach (var item in _context.Employees.ToList())
             {
                 var leave = _context.Leaves.Where(l => l.Name == "Regular" && l.EmployeeId == item.Id).OrderByDescending(date => date.DateFrom).FirstOrDefault();
@@ -43,24 +43,52 @@ namespace VU_SLMS.Controllers
                     var count = (DateTime.Now - leave.DateFrom).Days;
                     if (count > 80)
                     {
-                        Employee newemp = new Employee();
-                        newemp = _context.Employees.Where(e => e.Id == item.Id).FirstOrDefault();
-                        employees.Add(newemp);
+                        LeaveRequiredModel newemp = new LeaveRequiredModel();
+                        newemp.Type = 1;
+                        newemp.Id = item.Id;
+                        newemp.Name = item.Name;
+                        newemp.Image = item.Image;
+                        newemp.PrevRLeaveFrom = leave.DateFrom;
+                        newemp.PrevRLeaveTo = leave.DateTo;
+                        newemp.ExpcRLeave = leave.DateTo.AddMonths(3).AddDays(1);
+                        var extraleaves = _context.Leaves.Where(l => l.EmployeeId == item.Id && l.DateFrom > leave.DateFrom);
+                        var cont = 0;
+                        foreach(var L in extraleaves)
+                        {
+                            cont = cont + L.LeaveCount;
+                        }
+                        newemp.ExtraLeave = cont;
+                        empleave.Add(newemp);
                     }
                 }
                 else
                 {
                     var empl = _context.Employees.Where(e => e.Id == item.Id).FirstOrDefault();
-                    var count = (DateTime.Now - empl.JoiningDate).Days;
-                    if (count > 80)
+                    if(empl != null)
                     {
-                        Employee newemp = new Employee();
-                        newemp = _context.Employees.Where(e => e.Id == item.Id).FirstOrDefault();
-                        employees.Add(newemp);
+                        var count = (DateTime.Now - empl.JoiningDate).Days;
+                        if (count > 80)
+                        {
+                            LeaveRequiredModel newemp = new LeaveRequiredModel();
+                            newemp.Type = 0;
+                            newemp.Id = item.Id;
+                            newemp.Name = item.Name;
+                            newemp.Image = item.Image;
+                            newemp.JoiningDate = empl.JoiningDate;
+                            newemp.ExpcRLeave = empl.JoiningDate.AddMonths(3).AddDays(1);
+                            var extraleaves = _context.Leaves.Where(l => l.EmployeeId == item.Id && l.DateFrom > item.JoiningDate);
+                            var cont = 0;
+                            foreach (var L in extraleaves)
+                            {
+                                cont = cont + L.LeaveCount;
+                            }
+                            newemp.ExtraLeave = cont;
+                            empleave.Add(newemp);
+                        }
                     }
                 }
             }
-            return View(employees.OrderBy(name => name.Name));
+            return View(empleave.OrderBy(name => name.Name));
         }
         public IActionResult Login()
         {
@@ -421,7 +449,7 @@ namespace VU_SLMS.Controllers
         public IActionResult LeaveList(int? id)
         {
             if (id != null)
-            {
+                {
                 var Emp = _context.Employees.Where(e => e.Id == id).FirstOrDefault();
                 if(Emp != null)
                 {
@@ -487,6 +515,7 @@ namespace VU_SLMS.Controllers
                             Name = lev.Name,
                             EmployeeId = lev.EmployeeId,
                             EmployeeName = emp.Name,
+                            EmployeeImage = emp.Image,
                             DateFrom = lev.DateFrom,
                             DateTo = lev.DateTo,
                             Leavecount = lev.LeaveCount,

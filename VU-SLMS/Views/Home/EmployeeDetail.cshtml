@@ -9,7 +9,7 @@
     <nav>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/home/index">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item"><a href="/home/employeelist">EmployeeList</a></li>
             <li class="breadcrumb-item active">@ViewData["Title"]</li>
         </ol>
     </nav>
@@ -26,54 +26,58 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
-        <dl class="row">
-            <dt class="col-sm-4">
-                <strong>Name: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Name
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Image: </strong>
-            </dt>
-            <dd class="col-sm-8">
+        <div class="row">
+            <div class="col-6">
+                <dl class="row">
+                <dt class="col-sm-4">
+                    <strong>Name: </strong>
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Name
+                </dd>
+                <dt class="col-sm-4">
+                    <strong>Designation: </strong>
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Designation
+                </dd>
+                <dt class="col-sm-4">
+                    <strong>Gender: </strong>
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.Gender
+                </dd>
+                <dt class="col-sm-4">
+                    <strong>Phone No: </strong>
+                </dt>
+                <dd class="col-sm-8">
+                    @if(Model.PhoneNo != null)
+                    {
+                        <p><strong>+92 </strong>@Model.PhoneNo</p>
+                    }
+                </dd>
+                <dt class="col-sm-4">
+                    <strong>Joining Date: </strong>
+                </dt>
+                <dd class="col-sm-8">
+                    @Model.JoiningDate.ToString("dd/MMM/yyyy")
+                </dd>
+                </dl>
+            </div>
+            <div class="col-6">
+                <p class="col-sm-4">
+                    <strong>Image: </strong>
+                </p>
                 @if (Model.Image != null)
                 {
-                    <img src="@Model.Image" class="img-thumbnail" style="max-height: 200px;" />
+                    <img src="@Model.Image" class="img-thumbnail" style="max-height: 400px;" />
                 }
                 else
                 {
-                    <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 200px;" />
+                    <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 400px;" />
                 }
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Designation: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Designation
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Gender: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Gender
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Phone No: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @if(Model.PhoneNo != null)
-                {
-                    <p><strong>+92 </strong>@Model.PhoneNo</p>
-                }
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Joining Date: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.JoiningDate.ToString("dd/MMM/yyyy")
-            </dd>
-            </dl>
+            </div>
+        </div>
         <div class="mt-3">
             <a asp-action="EmployeeList" class="btn btn-sm btn-outline-info"><i class="bi bi-list-ul"> Back to List</i></a>
             <a asp-action="AddUpdateEmployee" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>

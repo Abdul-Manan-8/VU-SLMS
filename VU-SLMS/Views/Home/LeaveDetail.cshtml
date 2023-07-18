@@ -9,8 +9,8 @@
     <h1>@ViewData["Title"]</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/home/index">Home</a></li>
-            <li class="breadcrumb-item active">Dashboard</li>
+            <li class="breadcrumb-item"><a href="/home/index">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/home/leavelist">LeaveList</a></li>
             <li class="breadcrumb-item active">@ViewData["Title"]</li>
         </ol>
     </nav>
@@ -27,44 +27,61 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
-        <dl class="row">
-            <dt class="col-sm-4">
-                <strong>Employee Name: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.EmployeeName
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Leave Type: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Name
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Leave Description: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Description
-            </dd>
-            <dt class="col-sm-4">
-                <strong>No. of Leaves: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Leavecount
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Date From: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.DateFrom.ToString("dd/MMM/yyyy")
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Date To: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.DateTo.ToString("dd/MMM/yyyy")
-            </dd>
-        </dl>
+        <div class="row">
+            <div class="col-6">
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        <strong>Employee Name: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.EmployeeName
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Leave Type: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Name
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Leave Description: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Description
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>No. of Leaves: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Leavecount
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Date From: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.DateFrom.ToString("dd/MMM/yyyy")
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Date To: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.DateTo.ToString("dd/MMM/yyyy")
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-6">
+                    <p class="col-sm-4">
+                        <strong>Employee Image: </strong>
+                    </p>
+                    @if (Model.EmployeeImage != null)
+                    {
+                        <img src="@Model.EmployeeImage" class="img-thumbnail" style="max-height: 400px;" />
+                    }
+                    else
+                    {
+                        <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 400px;" />
+                    }
+            </div>
+        </div>
         <div class="mt-3">
             <a asp-action="LeaveList" class="btn btn-sm btn-outline-info"><i class="bi bi-list-ul "> Back to List</i></a>
             <a asp-action="AddUpdateLeave" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>

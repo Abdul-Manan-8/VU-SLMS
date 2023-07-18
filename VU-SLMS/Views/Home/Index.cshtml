@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VU_SLMS.Models.Employee>
+﻿@model IEnumerable<VU_SLMS.DTOs.LeaveRequiredModel>
 @{
     ViewData["Title"] = "Dashboard";
     var success = TempData["success"];
@@ -18,8 +18,7 @@
     <h1>@ViewData["Title"]</h1>
     <nav>
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="/home/index">Home</a></li>
-            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+            <li class="breadcrumb-item active"><a href="/home/index">@ViewData["Title"]</a></li>
         </ol>
     </nav>
 </div>
@@ -86,27 +85,61 @@
                         <div class="card" style="background-color: #FEF8DD;">
                             <div class="card-body">
                                 <h5 class="card-title">Leave Required for <strong>@E.Name</strong></h5>
-                                <dl class="row">
-                                    <dt class="col-sm-4">
-                                        <strong>Name: </strong>
-                                    </dt>
-                                    <dd class="col-sm-8">
-                                        @E.Name
-                                    </dd>
-                                    <dt class="col-sm-4">
-                                        <strong>Image: </strong>
-                                    </dt>
-                                    <dd class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <dl class="row">
+                                            <dt class="col-sm-4">
+                                                <strong>Name: </strong>
+                                            </dt>
+                                            <dd class="col-sm-8">
+                                                @E.Name
+                                            </dd>
+                                            @if(E.Type == 1)
+                                            {
+                                                <dt class="col-sm-4">
+                                                    <strong>Previous Leave: </strong>
+                                                </dt>
+                                                <dd class="col-sm-8">
+                                                    @E.PrevRLeaveFrom.ToString("dd-MMM-yyyy") -- @E.PrevRLeaveTo.ToString("dd/MMM/yyyy")
+                                                </dd>
+                                            }
+                                            else
+                                            {
+                                                <dt class="col-sm-4">
+                                                    <strong>Joinging Date: </strong>
+                                                </dt>
+                                                <dd class="col-sm-8">
+                                                    @E.JoiningDate.ToString("dd-MMM-yyyy")
+                                                </dd>
+                                            }
+                                            <dt class="col-sm-4">
+                                                <strong>Extra Leaves: </strong>
+                                            </dt>
+                                            <dd class="col-sm-8">
+                                                @E.ExtraLeave
+                                            </dd>
+                                            <dt class="col-sm-4">
+                                                <strong>Expected Leave: </strong>
+                                            </dt>
+                                            <dd class="col-sm-8">
+                                                @E.ExpcRLeave.ToString("dd-MMM-yyyy")
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                    <div class="col-6">
+                                        <p class="col-sm-4">
+                                            <strong>Employee Image: </strong>
+                                        </p>
                                         @if (E.Image != null)
                                         {
-                                            <img src="@E.Image" class="img-thumbnail" style="max-height: 100px;" />
+                                            <img src="@E.Image" class="img-thumbnail" style="max-height: 300px;" />
                                         }
                                         else
                                         {
-                                            <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 100px;" />
+                                            <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 300px;" />
                                         }
-                                    </dd>
-                                </dl>
+                                    </div>
+                                </div>
                                 <div class="mt-3">
                                     <a href="/home/addupdateleave" class="btn btn-sm btn-outline-primary">Add leave</a>
                                     <a href="/home/leavelist?id=@E.Id" class="btn btn-sm btn-outline-info">leaves detail</a>
