@@ -38,6 +38,10 @@ namespace VU_SLMS.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Amount)
+                    .HasColumnType("decimal(18, 0)")
+                    .HasColumnName("amount");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(20)
                     .HasColumnName("created_by");

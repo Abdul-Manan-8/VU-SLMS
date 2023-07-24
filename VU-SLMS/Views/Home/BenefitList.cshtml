@@ -1,6 +1,13 @@
 ﻿@model IEnumerable<VU_SLMS.DTOs.BenefitModel>
 @{
     var success = TempData["success"];
+    var Name = ViewBag.EmployeName;
+    var employeelist = ViewBag.Totalemp;
+    var Llist = ViewBag.Llist;
+    var Mlist = ViewBag.Mlist;
+    var Ulist = ViewBag.Ulist;
+    var Olist = ViewBag.Olist;
+    var GrandTotal = ViewBag.GrandTotal;
     ViewData["Title"] = "Benefit List";
 }
 
@@ -16,7 +23,7 @@
 
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">@ViewData["Title"]</h5>
+        <h5 class="card-title">@ViewData["Title"] @if (ViewBag.EmployeName != null){<b>@Name</b>}</h5>
         @if (success != null)
         {
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -25,30 +32,220 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
-        <!-- Table with stripped rows -->
-        <table class="table datatable">
-            <thead>
-                <tr>
-                    <th scope="col">Employee Name</th>
-                    <th scope="col">Benefit Type</th>
-                    <th scope="col">Date of issue</th>
-                    <th scope="col">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach(var L in Model){
-                <tr>
-                    <td>@L.EmployeeName</td>
-                    <td>@L.Name</td>
-                        <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
-                    <td>
-                            <a asp-action="BenefitDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
-        <!-- End Table with stripped rows -->
 
+        <h5 class="card-title" style="text-align: right;">
+            Grand Total: @if (ViewBag.GrandTotal != null)
+            {
+                <b class="text-warning">Rs. @GrandTotal</b>
+            }
+        </h5>
+        <!-- Employee dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Employee
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="max-height: 300px; overflow-y: scroll;">
+                <li><a class="dropdown-item" href="/home/benefitlist">All employees</a></li>
+                @foreach (var E in employeelist)
+                {
+                    <li><a class="dropdown-item" href="/home/benefitlist?eid=@E.Id">@E.Name</a></li>
+                }
+            </ul>
+        </div>
+        <!-- Table with stripped rows -->
+        <!-- Default Accordion -->
+        <div class="row">
+            <div class="accordion col-lg-6" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingone">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseone" aria-expanded="true" aria-controls="collapseone">
+                            Loan
+                        </button>
+                    </h2>
+                    <div id="collapseone" class="accordion-collapse collapse show" aria-labelledby="headingone" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <table id="Ltbl" class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Benefit Type</th>
+                                        <th scope="col">Benefit amount</th>
+                                        <th scope="col">Date of issue</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var L in Llist)
+                                    {
+                                        <tr>
+                                            <td>@L.Name</td>
+                                            <td class="loan">@L.Amount</td>
+                                            <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
+                                            <td>
+                                                <a asp-action="BenefitDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td><strong>Sum:</strong></td>
+                                        <td id="sumloan"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion col-lg-6" id="accordionExampl">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingtwo">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo">
+                            Medical allowance
+                        </button>
+                    </h2>
+                    <div id="collapsetwo" class="accordion-collapse collapse show" aria-labelledby="headingtwo" data-bs-parent="#accordionExampl">
+                        <div class="accordion-body">
+                            <table id="Mtbl" class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Benefit Type</th>
+                                        <th scope="col">Benefit amount</th>
+                                        <th scope="col">Date of issue</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var L in Mlist)
+                                    {
+                                        <tr>
+                                            <td>@L.Name</td>
+                                            <td>@L.Amount</td>
+                                            <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
+                                            <td>
+                                                <a asp-action="BenefitDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td><strong>Sum:</strong></td>
+                                        <td id="summedi"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion col-lg-6" id="accordionExamp">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingthree">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsethree" aria-expanded="true" aria-controls="collapsethree">
+                            Uniform
+                        </button>
+                    </h2>
+                    <div id="collapsethree" class="accordion-collapse collapse show" aria-labelledby="headingthree" data-bs-parent="#accordionExamp">
+                        <div class="accordion-body">
+                            <table id="Utbl" class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Benefit Type</th>
+                                        <th scope="col">Benefit amount</th>
+                                        <th scope="col">Date of issue</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var L in Ulist)
+                                    {
+                                        <tr>
+                                            <td>@L.Name</td>
+                                            <td>@L.Amount</td>
+                                            <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
+                                            <td>
+                                                <a asp-action="BenefitDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td><strong>Sum:</strong></td>
+                                        <td id="sumuni"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion col-lg-6" id="accordionExam">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingfour">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="true" aria-controls="collapsefour">
+                            Other benefit
+                        </button>
+                    </h2>
+                    <div id="collapsefour" class="accordion-collapse collapse show" aria-labelledby="headingfour" data-bs-parent="#accordionExam">
+                        <div class="accordion-body">
+                            <table id="Otbl" class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Benefit Type</th>
+                                        <th scope="col">Benefit amount</th>
+                                        <th scope="col">Date of issue</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var L in Olist)
+                                    {
+                                        <tr>
+                                            <td>@L.Name</td>
+                                            <td>@L.Amount</td>
+                                            <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
+                                            <td>
+                                                <a asp-action="BenefitDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
+                                            </td>
+                                        </tr>
+                                    }
+                                    <tr>
+                                        <td><strong>Sum:</strong></td>
+                                        <td id="sumother"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+@section scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+            $(document).ready(function () {
+                var sumL = 0;
+                $("#Ltbl tbody tr").each(function (index) {
+                    sumL += $(this).children().eq(1).text() * 1;
+                });
+                $("#sumloan").text(sumL);
+
+                var sumM = 0;
+                $("#Mtbl tbody tr").each(function (index) {
+                    sumM += $(this).children().eq(1).text() * 1;
+                });
+                $("#summedi").text(sumM);
+
+                var sumU = 0;
+                $("#Utbl tbody tr").each(function (index) {
+                    sumU += $(this).children().eq(1).text() * 1;
+                });
+                $("#sumuni").text(sumU);
+
+            var sumO = 0;
+            $("#Otbl tbody tr").each(function (index) {
+                sumO += $(this).children().eq(1).text() * 1;
+            });
+            $("#sumother").text(sumO);
+            });
+    </script>
+}

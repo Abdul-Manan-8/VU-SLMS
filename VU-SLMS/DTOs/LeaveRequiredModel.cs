@@ -9,6 +9,8 @@
         public DateTime PrevRLeaveFrom { get; set; }
         public DateTime PrevRLeaveTo { get; set; }
         public DateTime ExpcRLeave { get; set; }
+        public int? RLeaveCount { get; set; }
+        public int? LeavesThisYear { get; set; }
         public int? ExtraLeave { get; set; }
         public DateTime DateFrom { get; set; }
         public DateTime DateTo { get; set; }

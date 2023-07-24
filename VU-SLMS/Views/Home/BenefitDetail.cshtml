@@ -27,32 +27,49 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         }
-        <dl class="row">
-            <dt class="col-sm-4">
-                <strong>Employee Name: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.EmployeeName
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Benefit Type: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Name
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Benefit Description: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.Description
-            </dd>
-            <dt class="col-sm-4">
-                <strong>Issue Date: </strong>
-            </dt>
-            <dd class="col-sm-8">
-                @Model.DateOfIssue.ToString("dd/MMM/yyyy")
-            </dd>
-        </dl>
+        <div class="row">
+            <div class="col-6">
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        <strong>Employee Name: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.EmployeeName
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Benefit Type: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Name
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Benefit Description: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Description
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Issue Date: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.DateOfIssue.ToString("dd/MMM/yyyy")
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-6">
+                <p class="col-sm-4">
+                    <strong>Image: </strong>
+                </p>
+                @if (Model.Image != null)
+                {
+                    <img src="@Model.Image" class="img-thumbnail" style="max-height: 400px;" />
+                }
+                else
+                {
+                    <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 400px;" />
+                }
+            </div>
+        </div>
         <div class="mt-3">
             <a asp-action="BenefitList" class="btn btn-sm btn-outline-info"><i class="bi bi-list-ul "> Back to List</i></a>
             <a asp-action="AddUpdateBenefit" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>

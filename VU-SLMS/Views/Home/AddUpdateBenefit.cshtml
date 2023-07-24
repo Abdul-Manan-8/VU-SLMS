@@ -40,11 +40,13 @@
                             <option value="Loan">Loan</option>
                             <option value="Medical Allowance">Medical Allowance</option>
                             <option value="Uniform">Uniform</option>
-                            <option value="Shoes">Shoes</option>
-                            <option value="Jacket">Jacket</option>
                             <option value="Other">Other</option>
                         </select>
                         <label for="floatingSelect">Benefit</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Amount" type="number" class="form-control" id="floatingamount" placeholder="Benfit Amount" required>
+                        <label for="floatingamount">Amount</label>
                     </div>
                     <div class="form-floating mb-3">
                         <textarea asp-for="Description" class="form-control" placeholder="Benefit Description" id="floatingTextarea" style="height: 100px;"></textarea>

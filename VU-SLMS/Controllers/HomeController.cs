@@ -50,14 +50,28 @@ namespace VU_SLMS.Controllers
                         newemp.Image = item.Image;
                         newemp.PrevRLeaveFrom = leave.DateFrom;
                         newemp.PrevRLeaveTo = leave.DateTo;
+                        newemp.RLeaveCount = (leave.DateTo - leave.DateFrom).Days + 1; ;
                         newemp.ExpcRLeave = leave.DateTo.AddMonths(3).AddDays(1);
                         var extraleaves = _context.Leaves.Where(l => l.EmployeeId == item.Id && l.DateFrom > leave.DateFrom);
                         var cont = 0;
                         foreach(var L in extraleaves)
                         {
-                            cont = cont + L.LeaveCount;
+                            if(L.LeaveCount != null)
+                            {
+                                cont = (int)(cont + L.LeaveCount);
+                            }
                         }
                         newemp.ExtraLeave = cont;
+                        var YLeaves = _context.Leaves.Where(l => l.EmployeeId == item.Id && l.DateFrom.Year == DateTime.Now.Year).ToList();
+                        var ycount = 0;
+                        foreach (var C in YLeaves)
+                        {
+                            if(C.LeaveCount != null)
+                            {
+                                ycount = (int)(ycount + C.LeaveCount);
+                            }
+                        }
+                        newemp.LeavesThisYear = ycount;
                         empleave.Add(newemp);
                     }
                 }
@@ -80,15 +94,27 @@ namespace VU_SLMS.Controllers
                             var cont = 0;
                             foreach (var L in extraleaves)
                             {
-                                cont = cont + L.LeaveCount;
+                                if(L.LeaveCount != null)
+                                {
+                                    cont = (int)(cont + L.LeaveCount);
+                                }
                             }
                             newemp.ExtraLeave = cont;
+                            var YLeaves = _context.Leaves.Where(l => l.EmployeeId == item.Id && l.DateFrom.Year == DateTime.Now.Year).ToList();
+                            var ycount = 0;
+                            foreach (var C in YLeaves)
+                            {
+                                if(C.LeaveCount != null)
+                                {
+                                    ycount = (int)(ycount + C.LeaveCount);
+                                }
+                            }
                             empleave.Add(newemp);
                         }
                     }
                 }
             }
-            return View(empleave.OrderBy(name => name.Name));
+            return View(empleave.OrderBy(date => date.ExpcRLeave));
         }
         public IActionResult Login()
         {
@@ -354,20 +380,90 @@ namespace VU_SLMS.Controllers
             }
             return View();
         }
-        public IActionResult BenefitList()
+        public IActionResult BenefitList(int? eid)
         {
-            var list = (from ben in _context.Benefits
-                       from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
-                       select new BenefitModel
-                       {
-                           Id = ben.Id,
-                           Name = ben.Name,
-                           Description = ben.Description,
-                           EmployeeId = ben.EmployeeId,
-                           EmployeeName = emp.Name,
-                           DateOfIssue = ben.DateOfIssue,
-                       }).ToList();
-            return View(list.OrderBy(name => name.Name));
+            var employee = _context.Employees.Find(eid);
+            if(employee != null)
+            {
+                ViewBag.Llist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Loan").ToList();
+                ViewBag.Mlist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Medical Allowance").ToList();
+                ViewBag.Ulist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Uniform").ToList();
+                ViewBag.Olist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Other").ToList();
+                ViewBag.EmployeName = employee.Name;
+                var benefit = _context.Benefits.Where(b => b.EmployeeId == employee.Id).ToList();
+                var sum = 0;
+                foreach (var g in benefit)
+                {
+                    if(g.Amount != null)
+                    {
+                        sum = (int)(sum + g.Amount);
+                    }
+                }
+                ViewBag.grandtotal = sum;
+            }
+            else
+            {
+                ViewBag.Llist = (from ben in _context.Benefits.Where(b => b.Name == "Loan")
+                             from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
+                             select new BenefitModel
+                             {
+                                 Id = ben.Id,
+                                 Name = ben.Name,
+                                 Amount = ben.Amount,
+                                 Description = ben.Description,
+                                 EmployeeId = ben.EmployeeId,
+                                 EmployeeName = emp.Name,
+                                 DateOfIssue = ben.DateOfIssue,
+                             }).ToList();
+                ViewBag.Mlist = (from ben in _context.Benefits.Where(b => b.Name == "Medical Allowance")
+                             from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
+                             select new BenefitModel
+                             {
+                                 Id = ben.Id,
+                                 Name = ben.Name,
+                                 Amount = ben.Amount,
+                                 Description = ben.Description,
+                                 EmployeeId = ben.EmployeeId,
+                                 EmployeeName = emp.Name,
+                                 DateOfIssue = ben.DateOfIssue,
+                             }).ToList();
+                ViewBag.Ulist = (from ben in _context.Benefits.Where(b => b.Name == "Uniform")
+                             from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
+                             select new BenefitModel
+                             {
+                                 Id = ben.Id,
+                                 Name = ben.Name,
+                                 Amount = ben.Amount,
+                                 Description = ben.Description,
+                                 EmployeeId = ben.EmployeeId,
+                                 EmployeeName = emp.Name,
+                                 DateOfIssue = ben.DateOfIssue,
+                             }).ToList();
+                ViewBag.Olist = (from ben in _context.Benefits.Where(b => b.Name == "Other")
+                             from emp in _context.Employees.Where(m => m.Id == ben.EmployeeId).DefaultIfEmpty()
+                             select new BenefitModel
+                             {
+                                 Id = ben.Id,
+                                 Name = ben.Name,
+                                 Amount = ben.Amount,
+                                 Description = ben.Description,
+                                 EmployeeId = ben.EmployeeId,
+                                 EmployeeName = emp.Name,
+                                 DateOfIssue = ben.DateOfIssue,
+                             }).ToList();
+                var benefit = _context.Benefits.ToList();
+                var sum = 0;
+                foreach (var G in benefit)
+                {
+                    if(G.Amount != null)
+                    {
+                        sum = (int)(sum + G.Amount);
+                    }
+                }
+                ViewBag.GrandTotal = sum;
+            }
+            ViewBag.Totalemp = _context.Employees.ToList();
+            return View();
         }
         public IActionResult BenefitDetail(int? id)
         {
@@ -377,6 +473,7 @@ namespace VU_SLMS.Controllers
                        {
                            Id = ben.Id,
                            Name = ben.Name,
+                           Image = emp.Image,
                            Description = ben.Description,
                            EmployeeId = ben.EmployeeId,
                            EmployeeName = emp.Name,
@@ -473,7 +570,10 @@ namespace VU_SLMS.Controllers
                     var count = 0;
                     foreach (var C in Leaves)
                     {
-                        count = count + C.LeaveCount;
+                        if (C.LeaveCount != null)
+                        {
+                            count = count + C.LeaveCount.Value;
+                        }
                     }
                     ViewBag.LeavesThisYear = count;
 

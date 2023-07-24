@@ -102,6 +102,12 @@
                                                 <dd class="col-sm-8">
                                                     @E.PrevRLeaveFrom.ToString("dd-MMM-yyyy") -- @E.PrevRLeaveTo.ToString("dd/MMM/yyyy")
                                                 </dd>
+                                                <dt class="col-sm-4">
+                                                    <strong>Leave Count: </strong>
+                                                </dt>
+                                                <dd class="col-sm-8">
+                                                    @E.RLeaveCount
+                                                </dd>
                                             }
                                             else
                                             {
@@ -123,6 +129,19 @@
                                             </dt>
                                             <dd class="col-sm-8">
                                                 @E.ExpcRLeave.ToString("dd-MMM-yyyy")
+                                            </dd>
+                                            <dt class="col-sm-4">
+                                                <strong>Leaves this year: </strong>
+                                            </dt>
+                                            <dd class="col-sm-8">
+                                                @if(E.LeavesThisYear != null)
+                                                {
+                                                    @E.LeavesThisYear
+                                                }
+                                                else
+                                                {
+                                                    <p>0</p>
+                                                }
                                             </dd>
                                         </dl>
                                     </div>
