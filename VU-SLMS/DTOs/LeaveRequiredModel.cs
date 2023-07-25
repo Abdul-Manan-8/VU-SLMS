@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string? Name { get; set; }
+        public string? Campus { get; set; }
         public string? Image { get; set; }
         public DateTime JoiningDate { get; set; }
         public DateTime PrevRLeaveFrom { get; set; }

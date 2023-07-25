@@ -44,6 +44,14 @@
                         }
                     }
                     <div class="form-floating mb-3">
+                        <select asp-for="Campus" class="form-select" id="myDropdown" aria-label="Floating label select example" required>
+                            <option selected value="">Select Campus</option>
+                            <option value="Shahab pura">Shahab pura</option>
+                            <option value="Railway road">Railway road</option>
+                        </select>
+                        <label for="floatingSelect">Campus</label>
+                    </div>
+                    <div class="form-floating mb-3">
                         <select asp-for="Designation" class="form-select" id="myDropdown" aria-label="Floating label select example" required>
                             <option selected value="">Select Designation</option>
                             <option value="Canteen Staff">Canteen Staff</option>

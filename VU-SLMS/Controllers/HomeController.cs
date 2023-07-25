@@ -47,6 +47,7 @@ namespace VU_SLMS.Controllers
                         newemp.Type = 1;
                         newemp.Id = item.Id;
                         newemp.Name = item.Name;
+                        newemp.Campus = item.Campus;
                         newemp.Image = item.Image;
                         newemp.PrevRLeaveFrom = leave.DateFrom;
                         newemp.PrevRLeaveTo = leave.DateTo;
@@ -87,6 +88,7 @@ namespace VU_SLMS.Controllers
                             newemp.Type = 0;
                             newemp.Id = item.Id;
                             newemp.Name = item.Name;
+                            newemp.Campus = item.Campus;
                             newemp.Image = item.Image;
                             newemp.JoiningDate = empl.JoiningDate;
                             newemp.ExpcRLeave = empl.JoiningDate.AddMonths(3).AddDays(1);
@@ -346,7 +348,7 @@ namespace VU_SLMS.Controllers
             {
                 return RedirectToAction(nameof(CantAccess));
             }
-            ViewBag.Totalemp = _context.Employees.ToList();
+            ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
             if (id != null && id != 0)
             {
                 var ben = _context.Benefits.Find(id);
@@ -385,10 +387,58 @@ namespace VU_SLMS.Controllers
             var employee = _context.Employees.Find(eid);
             if(employee != null)
             {
-                ViewBag.Llist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Loan").ToList();
-                ViewBag.Mlist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Medical Allowance").ToList();
-                ViewBag.Ulist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Uniform").ToList();
-                ViewBag.Olist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Other").ToList();
+                ViewBag.Llist = (from ben in _context.Benefits.Where(b => b.Name == "Loan" && b.EmployeeId == employee.Id)
+                                 from emp in _context.Employees.Where(m => m.Id == employee.Id)
+                                 select new BenefitModel
+                                 {
+                                     Id = ben.Id,
+                                     Name = ben.Name,
+                                     Amount = ben.Amount,
+                                     Description = ben.Description,
+                                     EmployeeId = ben.EmployeeId,
+                                     EmployeeName = emp.Name,
+                                     DateOfIssue = ben.DateOfIssue,
+                                 }).ToList();
+                ViewBag.Mlist = (from ben in _context.Benefits.Where(b => b.Name == "Medical Allowance" && b.EmployeeId == employee.Id)
+                                 from emp in _context.Employees.Where(m => m.Id == employee.Id)
+                                 select new BenefitModel
+                                 {
+                                     Id = ben.Id,
+                                     Name = ben.Name,
+                                     Amount = ben.Amount,
+                                     Description = ben.Description,
+                                     EmployeeId = ben.EmployeeId,
+                                     EmployeeName = emp.Name,
+                                     DateOfIssue = ben.DateOfIssue,
+                                 }).ToList();
+                ViewBag.Ulist = (from ben in _context.Benefits.Where(b => b.Name == "Uniform" && b.EmployeeId == employee.Id)
+                                 from emp in _context.Employees.Where(m => m.Id == employee.Id)
+                                 select new BenefitModel
+                                 {
+                                     Id = ben.Id,
+                                     Name = ben.Name,
+                                     Amount = ben.Amount,
+                                     Description = ben.Description,
+                                     EmployeeId = ben.EmployeeId,
+                                     EmployeeName = emp.Name,
+                                     DateOfIssue = ben.DateOfIssue,
+                                 }).ToList();
+                ViewBag.Olist = (from ben in _context.Benefits.Where(b => b.Name == "Other" && b.EmployeeId == employee.Id)
+                                 from emp in _context.Employees.Where(m => m.Id == employee.Id)
+                                 select new BenefitModel
+                                 {
+                                     Id = ben.Id,
+                                     Name = ben.Name,
+                                     Amount = ben.Amount,
+                                     Description = ben.Description,
+                                     EmployeeId = ben.EmployeeId,
+                                     EmployeeName = emp.Name,
+                                     DateOfIssue = ben.DateOfIssue,
+                                 }).ToList();
+                //ViewBag.Llist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Loan").ToList();
+                //ViewBag.Mlist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Medical Allowance").ToList();
+                //ViewBag.Ulist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Uniform").ToList();
+                //ViewBag.Olist = _context.Benefits.Where(b => b.EmployeeId == employee.Id && b.Name == "Other").ToList();
                 ViewBag.EmployeName = employee.Name;
                 var benefit = _context.Benefits.Where(b => b.EmployeeId == employee.Id).ToList();
                 var sum = 0;
@@ -462,7 +512,7 @@ namespace VU_SLMS.Controllers
                 }
                 ViewBag.GrandTotal = sum;
             }
-            ViewBag.Totalemp = _context.Employees.ToList();
+            ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
             return View();
         }
         public IActionResult BenefitDetail(int? id)
@@ -507,7 +557,7 @@ namespace VU_SLMS.Controllers
             {
                 return RedirectToAction(nameof(CantAccess));
             }
-            ViewBag.Totalemp = _context.Employees.ToList();
+            ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
             if (id != null && id != 0)
             {
                 var lev = _context.Leaves.Find(id);
@@ -577,7 +627,7 @@ namespace VU_SLMS.Controllers
                     }
                     ViewBag.LeavesThisYear = count;
 
-                    ViewBag.Totalemp = _context.Employees.ToList();
+                    ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
                     return View(list.OrderByDescending(date => date.DateFrom));
                 }
                 return RedirectToAction(nameof(Notfound));
@@ -597,7 +647,7 @@ namespace VU_SLMS.Controllers
                                 Leavecount = lev.LeaveCount,
                                 Description = lev.Description
                             }).ToList();
-                ViewBag.Totalemp = _context.Employees.ToList();
+                ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
                 return View(list.OrderByDescending(date => date.DateFrom));
             }
         }

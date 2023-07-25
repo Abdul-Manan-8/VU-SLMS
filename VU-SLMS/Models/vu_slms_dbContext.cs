@@ -71,6 +71,10 @@ namespace VU_SLMS.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Campus)
+                    .HasMaxLength(50)
+                    .HasColumnName("campus");
+
                 entity.Property(e => e.CreatedBy)
                     .HasMaxLength(50)
                     .IsUnicode(false)

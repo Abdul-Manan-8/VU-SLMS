@@ -94,6 +94,12 @@
                                             <dd class="col-sm-8">
                                                 @E.Name
                                             </dd>
+                                            <dt class="col-sm-4">
+                                                <strong>Campus: </strong>
+                                            </dt>
+                                            <dd class="col-sm-8">
+                                                @E.Campus
+                                            </dd>
                                             @if(E.Type == 1)
                                             {
                                                 <dt class="col-sm-4">
@@ -125,7 +131,7 @@
                                                 @E.ExtraLeave
                                             </dd>
                                             <dt class="col-sm-4">
-                                                <strong>Expected Leave: </strong>
+                                                <strong>Expected Leave date: </strong>
                                             </dt>
                                             <dd class="col-sm-8">
                                                 @E.ExpcRLeave.ToString("dd-MMM-yyyy")

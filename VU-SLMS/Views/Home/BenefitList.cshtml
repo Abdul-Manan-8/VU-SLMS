@@ -67,7 +67,7 @@
                             <table id="Ltbl" class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Benefit Type</th>
+                                        <th scope="col">Employee name</th>
                                         <th scope="col">Benefit amount</th>
                                         <th scope="col">Date of issue</th>
                                         <th scope="col">Action</th>
@@ -77,7 +77,7 @@
                                     @foreach (var L in Llist)
                                     {
                                         <tr>
-                                            <td>@L.Name</td>
+                                            <td>@L.EmployeeName</td>
                                             <td class="loan">@L.Amount</td>
                                             <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
                                             <td>
@@ -107,7 +107,7 @@
                             <table id="Mtbl" class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Benefit Type</th>
+                                        <th scope="col">Employee name</th>
                                         <th scope="col">Benefit amount</th>
                                         <th scope="col">Date of issue</th>
                                         <th scope="col">Action</th>
@@ -117,7 +117,7 @@
                                     @foreach (var L in Mlist)
                                     {
                                         <tr>
-                                            <td>@L.Name</td>
+                                            <td>@L.EmployeeName</td>
                                             <td>@L.Amount</td>
                                             <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
                                             <td>
@@ -147,7 +147,7 @@
                             <table id="Utbl" class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Benefit Type</th>
+                                        <th scope="col">Employee name</th>
                                         <th scope="col">Benefit amount</th>
                                         <th scope="col">Date of issue</th>
                                         <th scope="col">Action</th>
@@ -157,7 +157,7 @@
                                     @foreach (var L in Ulist)
                                     {
                                         <tr>
-                                            <td>@L.Name</td>
+                                            <td>@L.EmployeeName</td>
                                             <td>@L.Amount</td>
                                             <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
                                             <td>
@@ -187,7 +187,7 @@
                             <table id="Otbl" class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Benefit Type</th>
+                                        <th scope="col">Employee name</th>
                                         <th scope="col">Benefit amount</th>
                                         <th scope="col">Date of issue</th>
                                         <th scope="col">Action</th>
@@ -197,7 +197,7 @@
                                     @foreach (var L in Olist)
                                     {
                                         <tr>
-                                            <td>@L.Name</td>
+                                            <td>@L.EmployeeName</td>
                                             <td>@L.Amount</td>
                                             <td>@L.DateOfIssue.ToString("dd/MMM/yyyy")</td>
                                             <td>
