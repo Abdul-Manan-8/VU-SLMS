@@ -525,6 +525,7 @@ namespace VU_SLMS.Controllers
                            Name = ben.Name,
                            Image = emp.Image,
                            Description = ben.Description,
+                           Amount = ben.Amount,
                            EmployeeId = ben.EmployeeId,
                            EmployeeName = emp.Name,
                            DateOfIssue = ben.DateOfIssue,
