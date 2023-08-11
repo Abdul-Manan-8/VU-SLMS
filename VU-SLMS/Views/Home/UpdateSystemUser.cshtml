@@ -25,7 +25,7 @@
                         <label for="floatingInput">UserName</label>
                     </div>
                     <div class="form-floating mb-3">
-                        <input asp-for="Password" type="text" class="form-control" id="floatingInput" placeholder="Password" required>
+                        <input asp-for="Password" type="password" class="form-control" id="floatingInput" placeholder="Password" required>
                         <label for="floatingInput">Password</label>
                     </div>
                     @if (Context.Session.GetInt32("Type") == 0 && Context.Session.GetInt32("Id") != Model.Id)
