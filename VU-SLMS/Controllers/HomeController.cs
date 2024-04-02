@@ -691,5 +691,159 @@ namespace VU_SLMS.Controllers
             return RedirectToAction(nameof(CantAccess));
         }
         #endregion
+
+        #region ShortLeaves
+        [HttpGet]
+        public IActionResult AddUpdateShortLeave(int? id)
+        {
+            if (HttpContext.Session.GetInt32("UserName") == null)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
+            ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
+            if (id != null && id != 0)
+            {
+                var lev = _context.ShortLeaves.Find(id);
+                return View(lev);
+            }
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddUpdateShortLeave(ShortLeave leave)
+        {
+            if(leave.TimeTo < leave.TimeFrom)
+            {
+                ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
+                //ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
+                TempData["error"] = "Time span order is not correct!";
+                return View(leave);
+            }
+            if (leave.Id == 0)
+            {
+                leave.CreatedDate = DateTime.Now;
+                leave.CreatedBy = HttpContext.Session.GetString("UserName");
+                leave.TimeDuration = leave.TimeTo - leave.TimeFrom;
+                _context.ShortLeaves.Add(leave);
+                _context.SaveChanges();
+                TempData["success"] = "Short Leave added successfully";
+                return RedirectToAction("ShortLeaveDetail", new { id = leave.Id });
+            }
+            else
+            {
+                if (leave != null)
+                {
+                    leave.CreatedDate = DateTime.Now;
+                    leave.CreatedBy = HttpContext.Session.GetString("UserName");
+                    leave.TimeDuration = leave.TimeTo - leave.TimeFrom;
+                    _context.Update(leave);
+                    _context.SaveChanges();
+                    TempData["success"] = "Short Leave updated successfully";
+                    return RedirectToAction("ShortLeaveDetail", new { id = leave.Id });
+                }
+            }
+            return RedirectToAction(nameof(LeaveDetail));
+        }
+        public IActionResult ShortLeaveList(int? id)
+        {
+            if (id != null)
+            {
+                var Emp = _context.Employees.Where(e => e.Id == id).FirstOrDefault();
+                if (Emp != null)
+                {
+                    var list = (from lev in _context.ShortLeaves.Where(e => e.EmployeeId == Emp.Id)
+                                from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
+                                select new ShortLeaveModel
+                                {
+                                    Id = lev.Id,
+                                    Name = lev.Name,
+                                    EmployeeId = lev.EmployeeId,
+                                    EmployeeName = emp.Name,
+                                    EmployeeImage = emp.Image,
+                                    LeaveDate = lev.LeaveDate,
+                                    TimeFrom = lev.TimeFrom,
+                                    TimeTo = lev.TimeTo,
+                                    TimeDuration = lev.TimeDuration,
+                                    Description = lev.Description
+                                }).ToList();
+                    ViewBag.EmployeName = "for " + Emp.Name;
+
+                    //Code to get Leaves of this year
+                    var Leaves = _context.ShortLeaves.Where(l => l.EmployeeId == Emp.Id && l.LeaveDate.Year == DateTime.Now.Year).ToList();
+                    TimeSpan count = TimeSpan.Zero;
+                    foreach (var C in Leaves)
+                    {
+                        if (C.TimeDuration != null)
+                        {
+                            count = (TimeSpan)(count + C.TimeDuration);
+                        }
+                    }
+                    ViewBag.LeavesThisYear = count;
+
+                    ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
+                    return View(list.OrderByDescending(date => date.LeaveDate));
+                }
+                return RedirectToAction(nameof(Notfound));
+            }
+            else
+            {
+                var list = (from lev in _context.ShortLeaves
+                            from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
+                            select new ShortLeaveModel
+                            {
+                                Id = lev.Id,
+                                Name = lev.Name,
+                                EmployeeId = lev.EmployeeId,
+                                EmployeeName = emp.Name,
+                                EmployeeImage = emp.Image,
+                                LeaveDate = lev.LeaveDate,
+                                TimeFrom = lev.TimeFrom,
+                                TimeTo = lev.TimeTo,
+                                TimeDuration = lev.TimeDuration,
+                                Description = lev.Description
+                            }).ToList();
+                ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
+                return View(list.OrderByDescending(date => date.LeaveDate));
+            }
+        }
+        public IActionResult ShortLeaveDetail(int id)
+        {
+            if (HttpContext.Session.GetInt32("UserName") == null)
+            {
+                return RedirectToAction(nameof(CantAccess));
+            }
+            var list = (from lev in _context.ShortLeaves.Where(l => l.Id == id)
+                        from emp in _context.Employees.Where(m => m.Id == lev.EmployeeId).DefaultIfEmpty()
+                        select new ShortLeaveModel
+                        {
+                            Id = lev.Id,
+                            Name = lev.Name,
+                            EmployeeId = lev.EmployeeId,
+                            EmployeeName = emp.Name,
+                            EmployeeImage = emp.Image,
+                            LeaveDate = lev.LeaveDate,
+                            TimeFrom = lev.TimeFrom,
+                            TimeTo = lev.TimeTo,
+                            TimeDuration = lev.TimeDuration,
+                            Description = lev.Description
+                        }).FirstOrDefault();
+            return View(list);
+        }
+        public IActionResult DeleteShortLeave(int? id)
+        {
+            if (HttpContext.Session.GetInt32("Type") == 1 || HttpContext.Session.GetInt32("Type") == 0)
+            {
+                var lev = _context.ShortLeaves.Find(id);
+                if (lev != null)
+                {
+                    _context.ShortLeaves.Remove(lev);
+                    _context.SaveChanges();
+                    TempData["success"] = "Short Leave deleted!";
+                    return RedirectToAction(nameof(ShortLeaveList));
+                }
+                return View(nameof(Notfound));
+            }
+            return RedirectToAction(nameof(CantAccess));
+        }
+        #endregion
     }
 }

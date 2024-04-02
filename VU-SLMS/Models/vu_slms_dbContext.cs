@@ -19,6 +19,7 @@ namespace VU_SLMS.Models
         public virtual DbSet<Benefit> Benefits { get; set; } = null!;
         public virtual DbSet<Employee> Employees { get; set; } = null!;
         public virtual DbSet<Leave> Leaves { get; set; } = null!;
+        public virtual DbSet<ShortLeave> ShortLeaves { get; set; } = null!;
         public virtual DbSet<SystemUser> SystemUsers { get; set; } = null!;
 
 //        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -143,6 +144,39 @@ namespace VU_SLMS.Models
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
                     .HasColumnName("name");
+            });
+
+            modelBuilder.Entity<ShortLeave>(entity =>
+            {
+                entity.ToTable("short_leave");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.CreatedBy)
+                    .HasMaxLength(50)
+                    .HasColumnName("created_by");
+
+                entity.Property(e => e.CreatedDate)
+                    .HasColumnType("date")
+                    .HasColumnName("created_date");
+
+                entity.Property(e => e.Description).HasColumnName("description");
+
+                entity.Property(e => e.EmployeeId).HasColumnName("employee_id");
+
+                entity.Property(e => e.LeaveDate)
+                    .HasColumnType("date")
+                    .HasColumnName("leave_date");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.TimeDuration).HasColumnName("time_duration");
+
+                entity.Property(e => e.TimeFrom).HasColumnName("time_from");
+
+                entity.Property(e => e.TimeTo).HasColumnName("time_to");
             });
 
             modelBuilder.Entity<SystemUser>(entity =>

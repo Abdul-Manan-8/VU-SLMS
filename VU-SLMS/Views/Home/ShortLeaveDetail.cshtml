@@ -1,0 +1,171 @@
+﻿@model VU_SLMS.DTOs.ShortLeaveModel
+
+@{
+    ViewData["Title"] = "Short Leave Detail";
+    var success = TempData["success"];
+}
+
+<div class="pagetitle">
+    <h1>@ViewData["Title"]</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home/index">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/home/shortleavelist">ShortLeaveList</a></li>
+            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@ViewData["Title"]</h5>
+        @if (success != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="bi bi-check-circle me-1"></i>
+                @success
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+        <div class="row">
+            <div class="col-6">
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        <strong>Employee Name: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.EmployeeName
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Leave Type: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Name
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Leave Description: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.Description
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Leave Date: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @Model.LeaveDate.ToString("dd/MMM/yyyy")
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Time From: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @{
+                            // Check if Model.TimeTo is not null
+                            // Parse the time string into a DateTime object
+                            DateTime timefrom;
+                            if (DateTime.TryParse(Model.TimeFrom.ToString(), out timefrom))
+                            {
+                                // Format the parsed time to display only hours and minutes
+                                string formattedTimeFrom = timefrom.ToString("hh:mm tt");
+                                @formattedTimeFrom
+                            }
+                            else
+                            {
+                            // Handle invalid time format
+                                <text>Invalid time format</text>
+                            }
+                        }
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Time To: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @{
+                        // Check if Model.TimeTo is not null
+                            // Parse the time string into a DateTime object
+                            DateTime timeTo;
+                            if (DateTime.TryParse(Model.TimeTo.ToString(), out timeTo))
+                            {
+                                // Format the parsed time to display only hours and minutes
+                                string formattedTimeTo = timeTo.ToString("hh:mm tt");
+                                @formattedTimeTo
+                            }
+                            else
+                            {
+                            // Handle invalid time format
+                                <text>Invalid time format</text>
+                            }
+                        }
+                    </dd>
+                    <dt class="col-sm-4">
+                        <strong>Time Duration: </strong>
+                    </dt>
+                    <dd class="col-sm-8">
+                        @{
+                            // Check if Model.TimeTo is not null
+                            // Parse the time string into a DateTime object
+                            DateTime timeduration;
+                            if (DateTime.TryParse(Model.TimeDuration.ToString(), out timeduration))
+                            {
+                                // Format the parsed time to display only hours and minutes
+                                string formattedTimeDuration = timeduration.ToString("hh:mm");
+                                @formattedTimeDuration
+                            }
+                            else
+                            {
+                            // Handle invalid time format
+                                <text>Invalid time format</text>
+                            }
+                        }
+                    </dd>
+                </dl>
+            </div>
+            <div class="col-6">
+                    <p class="col-sm-4">
+                        <strong>Employee Image: </strong>
+                    </p>
+                    @if (Model.EmployeeImage != null)
+                    {
+                        <img src="@Model.EmployeeImage" class="img-thumbnail" style="max-height: 400px;" />
+                    }
+                    else
+                    {
+                        <img src="/data/placeholder.jpg" class="img-thumbnail" style="max-height: 400px;" />
+                    }
+            </div>
+        </div>
+        <div class="mt-3">
+            <a asp-action="ShortLeaveList" class="btn btn-sm btn-outline-info"><i class="bi bi-list-ul "> Back to List</i></a>
+            <a asp-action="AddUpdateShortLeave" asp-route-id="@Model.Id" class="btn btn-sm btn-outline-warning"><i class="bi bi-pencil-fill"> Edit</i></a>
+            @if (Context.Session.GetInt32("Type") == 1 || Context.Session.GetInt32("Type") == 0)
+            {
+                <a class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"><i class="bi bi-trash-fill"> Delete</i></a>
+            }
+        </div>
+    </div>
+</div>
+
+
+<!--Delete Model-->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Short Leave</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-warning">Warning!!!</h4>
+                <p>This data will not recover if deleted!!!</p>
+                <p>Are you sure to delete this Short leave!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="/home/deleteshortleave?id=@Model.Id" type="button" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Delete Model End-->
+<script>
+
+</script>

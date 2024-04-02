@@ -1,0 +1,113 @@
+﻿@model IEnumerable<VU_SLMS.DTOs.ShortLeaveModel>
+@{
+    ViewData["Title"] = "ShortLeave List";
+    var success = TempData["success"];
+    var employeelist = ViewBag.Totalemp;
+    var Name = ViewBag.EmployeName;
+    var LeavesThisYear = ViewBag.LeavesThisYear;
+}
+
+<div class="pagetitle">
+    <h1>@ViewData["Title"]</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/home/index">Dashboard</a></li>
+            <li class="breadcrumb-item active">@ViewData["Title"]</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">@ViewData["Title"] @if(ViewBag.EmployeName != null){<b>@Name</b>}</h5>
+        @if (success != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="bi bi-exclamation-octagon me-1"></i>
+                @success
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        <h5 class="card-title" style="text-align: right;">This Year Short Leaves: @if (ViewBag.LeavesThisYear != null)
+            {
+                <b class="text-warning">
+                    @{
+                        // Check if Model.TimeTo is not null
+                        // Parse the time string into a DateTime object
+                        DateTime timeduration;
+                        if (DateTime.TryParse(LeavesThisYear.ToString(), out timeduration))
+                        {
+                            // Format the parsed time to display only hours and minutes
+                            string formattedTimeDuration = timeduration.ToString("hh:mm");
+                            @formattedTimeDuration
+                        }
+                        else
+                        {
+                            // Handle invalid time format
+                            <text>Invalid time format</text>
+                        }
+                    }
+                </b>
+            }
+        </h5>
+        <!-- Employee dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                Select Employee 
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="max-height: 300px; overflow-y: scroll;">
+                <li><a class="dropdown-item" href="/home/leavelist">All employees</a></li>
+                @foreach(var E in employeelist)
+                {
+                    <li><a class="dropdown-item" href="/home/shortleavelist?id=@E.Id">@E.Name</a></li>
+                }
+            </ul>
+        </div>
+
+        <!-- Table with stripped rows -->
+        <table class="table datatable">
+            <thead>
+                <tr>
+                    <th scope="col">Employee Name</th>
+                    <th scope="col">Leave Date</th>
+                    <th scope="col">Time Duration</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var L in Model)
+                {
+                    <tr>
+                        <td>@L.EmployeeName</td>
+                        <td>@L.Name</td>
+                        <td>@L.LeaveDate.ToString("dd/MMM/yyyy")</td>
+                        <td>
+                            @{
+                                // Check if Model.TimeTo is not null
+                                // Parse the time string into a DateTime object
+                                DateTime timeduration;
+                                if (DateTime.TryParse(L.TimeDuration.ToString(), out timeduration))
+                                {
+                                    // Format the parsed time to display only hours and minutes
+                                    string formattedTimeDuration = timeduration.ToString("hh:mm");
+                                    @formattedTimeDuration
+                                }
+                                else
+                                {
+                                // Handle invalid time format
+                                    <text>Invalid time format</text>
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="ShortLeaveDetail" asp-route-id="@L.Id" class="btn btn-sm btn-outline-info"><i class="bi bi-card-text"> Detail</i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- End Table with stripped rows -->
+
+    </div>
+</div>
