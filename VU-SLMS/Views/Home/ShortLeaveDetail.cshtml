@@ -59,6 +59,10 @@
                     </dt>
                     <dd class="col-sm-8">
                         @{
+                            var timefrom = $"{((TimeSpan)Model.TimeFrom).Hours:00}:{((TimeSpan)Model.TimeFrom).Minutes:00}";
+                            @timefrom
+                        }
+                        @* @{
                             // Check if Model.TimeTo is not null
                             // Parse the time string into a DateTime object
                             DateTime timefrom;
@@ -73,48 +77,25 @@
                             // Handle invalid time format
                                 <text>Invalid time format</text>
                             }
-                        }
+                        } *@
                     </dd>
                     <dt class="col-sm-4">
                         <strong>Time To: </strong>
                     </dt>
                     <dd class="col-sm-8">
                         @{
-                        // Check if Model.TimeTo is not null
-                            // Parse the time string into a DateTime object
-                            DateTime timeTo;
-                            if (DateTime.TryParse(Model.TimeTo.ToString(), out timeTo))
-                            {
-                                // Format the parsed time to display only hours and minutes
-                                string formattedTimeTo = timeTo.ToString("hh:mm tt");
-                                @formattedTimeTo
-                            }
-                            else
-                            {
-                            // Handle invalid time format
-                                <text>Invalid time format</text>
-                            }
+                            var timeto = $"{((TimeSpan)Model.TimeTo).Hours:00}:{((TimeSpan)Model.TimeTo).Minutes:00}";
+                            @timeto
                         }
                     </dd>
                     <dt class="col-sm-4">
                         <strong>Time Duration: </strong>
                     </dt>
                     <dd class="col-sm-8">
-                        @{
-                            // Check if Model.TimeTo is not null
-                            // Parse the time string into a DateTime object
-                            DateTime timeduration;
-                            if (DateTime.TryParse(Model.TimeDuration.ToString(), out timeduration))
-                            {
-                                // Format the parsed time to display only hours and minutes
-                                string formattedTimeDuration = timeduration.ToString("hh:mm");
-                                @formattedTimeDuration
-                            }
-                            else
-                            {
-                            // Handle invalid time format
-                                <text>Invalid time format</text>
-                            }
+                        @if (Model.TimeDuration != null)
+                        {
+                            var timespan = $"{((TimeSpan)Model.TimeDuration).Hours:00}:{((TimeSpan)Model.TimeDuration).Minutes:00}";
+                            @timespan
                         }
                     </dd>
                 </dl>

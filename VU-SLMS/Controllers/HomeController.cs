@@ -768,6 +768,22 @@ namespace VU_SLMS.Controllers
                     ViewBag.EmployeName = "for " + Emp.Name;
 
                     //Code to get Leaves of this year
+                    //var Leaves = _context.ShortLeaves.Where(l => l.EmployeeId == Emp.Id && l.LeaveDate.Year == DateTime.Now.Year).ToList();
+                    //TimeSpan count = TimeSpan.Zero;
+                    //foreach (var C in Leaves)
+                    //{
+                    //    if (C.TimeDuration != null)
+                    //    {
+                    //        count = (TimeSpan)(count + C.TimeDuration);
+                    //    }
+                    //}
+                    //var timespan = count.ToString();
+                    //string[] time = timespan.Split(':');
+                    //ViewBag.LeavesThisYear = count;
+                    //string realtimespan = time[0] + ":" + time[1];
+                    //ViewBag.LeavesThisYear = realtimespan;
+                    //ViewBag.LeavesThisYear = count;
+
                     var Leaves = _context.ShortLeaves.Where(l => l.EmployeeId == Emp.Id && l.LeaveDate.Year == DateTime.Now.Year).ToList();
                     TimeSpan count = TimeSpan.Zero;
                     foreach (var C in Leaves)
@@ -777,7 +793,8 @@ namespace VU_SLMS.Controllers
                             count = (TimeSpan)(count + C.TimeDuration);
                         }
                     }
-                    ViewBag.LeavesThisYear = count;
+                    var timespan = $"{count.Hours:00}:{count.Minutes:00}";
+                    ViewBag.LeavesThisYear = timespan;
 
                     ViewBag.Totalemp = _context.Employees.ToList().OrderBy(name => name.Name);
                     return View(list.OrderByDescending(date => date.LeaveDate));

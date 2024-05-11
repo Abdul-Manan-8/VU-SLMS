@@ -32,22 +32,7 @@
         <h5 class="card-title" style="text-align: right;">This Year Short Leaves: @if (ViewBag.LeavesThisYear != null)
             {
                 <b class="text-warning">
-                    @{
-                        // Check if Model.TimeTo is not null
-                        // Parse the time string into a DateTime object
-                        DateTime timeduration;
-                        if (DateTime.TryParse(LeavesThisYear.ToString(), out timeduration))
-                        {
-                            // Format the parsed time to display only hours and minutes
-                            string formattedTimeDuration = timeduration.ToString("hh:mm");
-                            @formattedTimeDuration
-                        }
-                        else
-                        {
-                            // Handle invalid time format
-                            <text>Invalid time format</text>
-                        }
-                    }
+                    @LeavesThisYear
                 </b>
             }
         </h5>
@@ -57,7 +42,7 @@
                 Select Employee 
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="max-height: 300px; overflow-y: scroll;">
-                <li><a class="dropdown-item" href="/home/leavelist">All employees</a></li>
+                <li><a class="dropdown-item" href="/home/shortleavelist">All employees</a></li>
                 @foreach(var E in employeelist)
                 {
                     <li><a class="dropdown-item" href="/home/shortleavelist?id=@E.Id">@E.Name</a></li>
@@ -80,24 +65,10 @@
                 {
                     <tr>
                         <td>@L.EmployeeName</td>
-                        <td>@L.Name</td>
                         <td>@L.LeaveDate.ToString("dd/MMM/yyyy")</td>
-                        <td>
-                            @{
-                                // Check if Model.TimeTo is not null
-                                // Parse the time string into a DateTime object
-                                DateTime timeduration;
-                                if (DateTime.TryParse(L.TimeDuration.ToString(), out timeduration))
-                                {
-                                    // Format the parsed time to display only hours and minutes
-                                    string formattedTimeDuration = timeduration.ToString("hh:mm");
-                                    @formattedTimeDuration
-                                }
-                                else
-                                {
-                                // Handle invalid time format
-                                    <text>Invalid time format</text>
-                                }
+                        <td>@if(L.TimeDuration != null){
+                                var timespan = $"{((TimeSpan)L.TimeDuration).Hours:00}:{((TimeSpan)L.TimeDuration).Minutes:00}";
+                                @timespan
                             }
                         </td>
                         <td>
